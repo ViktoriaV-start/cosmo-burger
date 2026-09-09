@@ -4,12 +4,11 @@ import { AppHeader } from '@components/app-header/app-header';
 import { useApp } from '@components/app/useApp.ts';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
-import { order } from '@utils/order';
 
 import styles from './app.module.css';
 
 export const App = () => {
-  const { ingredients, isLoading, errorMessage } = useApp();
+  const { ingredients, isLoading, errorMessage, order } = useApp();
 
   return (
     <div className={styles.app}>

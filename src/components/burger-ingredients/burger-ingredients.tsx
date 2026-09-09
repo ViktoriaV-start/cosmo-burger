@@ -1,5 +1,6 @@
 import { Counter, CurrencyIcon, Tab } from '@krgaa/react-developer-burger-ui-components';
 import classnames from 'classnames';
+import { useMemo } from 'react';
 
 import type { TIngredient } from '@utils/types';
 
@@ -32,13 +33,18 @@ export const BurgerIngredients = ({ ingredients }: TBurgerIngredientsProps) => {
     return packElement;
   };
 
-  const buns = ingredients.filter(({ type }) => type === 'bun');
-  const sauces = ingredients.filter(({ type }) => type === 'sauce');
-  const mains = ingredients.filter(({ type }) => type === 'main');
+  const { buns, sauces, mains } = useMemo(
+    () => ({
+      buns: ingredients.filter(({ type }) => type === 'bun'),
+      sauces: ingredients.filter(({ type }) => type === 'sauce'),
+      mains: ingredients.filter(({ type }) => type === 'main'),
+    }),
+    [ingredients]
+  );
 
-  const bunsIngredients = createPackElement(buns);
-  const saucesIngredients = createPackElement(sauces);
-  const mainsIngredients = createPackElement(mains);
+  const bunsIngredients = useMemo(() => createPackElement(buns), [buns]);
+  const saucesIngredients = useMemo(() => createPackElement(sauces), [sauces]);
+  const mainsIngredients = useMemo(() => createPackElement(mains), [mains]);
 
   return (
     <section className={styles.burger_ingredients}>

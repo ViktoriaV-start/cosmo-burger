@@ -5,26 +5,45 @@ import {
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
 import classnames from 'classnames';
+import { useMemo } from 'react';
 
 import type { TOrder } from '@utils/types';
 
 import styles from './burger-constructor.module.css';
 
 type TBurgerConstructorProps = {
-  order: TOrder;
+  order: TOrder | null;
 };
 
 export const BurgerConstructor = ({ order }: TBurgerConstructorProps) => {
-  const { bun, fillings } = order;
+  const totalPrice = useMemo(() => {
+    if (!order) {
+      return 0;
+    }
 
-  const totalPrice = bun.price * 2 + fillings.reduce((sum, { price }) => sum + price, 0);
+    return (
+      order.bun.price * 2 + order.fillings.reduce((sum, { price }) => sum + price, 0)
+    );
+  }, [order]);
 
-  const orderIngredients = fillings.map(({ _id, name, price, image_mobile }) => (
-    <li key={`order-${_id}`} className={styles.order_ingredient}>
-      <DragIcon type="primary" />
-      <ConstructorElement price={price} text={name} thumbnail={image_mobile} />
-    </li>
-  ));
+  const orderIngredients = useMemo(() => {
+    if (!order) {
+      return [];
+    }
+
+    return order.fillings.map(({ _id, name, price, image_mobile }) => (
+      <li key={`order-${_id}`} className={styles.order_ingredient}>
+        <DragIcon type="primary" />
+        <ConstructorElement price={price} text={name} thumbnail={image_mobile} />
+      </li>
+    ));
+  }, [order]);
+
+  if (!order) {
+    return null;
+  }
+
+  const { bun } = order;
 
   return (
     <section className={classnames(styles.burger_constructor, 'mt-25', 'pl-10')}>
