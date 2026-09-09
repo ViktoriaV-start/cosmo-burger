@@ -2,8 +2,14 @@
   display: flex;
   flex-direction: column;
   max-width: 600px;
-  color: var(--text-primary-color);
+  height: 100%;
+  min-height: 0;
+  color: var(--text-primary-color, #f2f2f3);
   font-family: 'Jet Brains Mono', serif;
+}
+
+.menu_wrap {
+  flex-shrink: 0;
 }
 
 .menu {
@@ -11,5 +17,43 @@
   margin: 0;
   padding: 0;
   text-align: center;
-  list-style-type: none;
+}
+
+.ingredients_scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-right: 4px;
+  overflow-y: auto;
+}
+
+.ingredients_pack {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
+}
+
+.burger_ingredient {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 208px;
+  text-align: center;
+}
+
+.ingredient_image {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+}
+
+.ingredient_price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.ingredient_counter {
+  position: absolute;
 }

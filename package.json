@@ -25,12 +25,13 @@
     "@babel/runtime": "^7.28.4",
     "@krgaa/react-developer-burger-ui-components": "^1.0.1",
     "@reduxjs/toolkit": "^2.9.0",
+    "classnames": "^2.5.1",
     "core-js": "^3.45.1",
     "lodash-es": "^4.17.21",
-    "react": "^19.1.1",
+    "react": "^19.1.2",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
-    "react-dom": "^19.1.1",
+    "react-dom": "^19.1.2",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.3"
   },
@@ -40,11 +41,12 @@
     "@testing-library/jest-dom": "^6.9.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/react": "^19.1.13",
-    "@types/react-dom": "^19.1.9",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^5.0.3",
     "@vitest/browser": "^3.2.4",
     "@vitest/ui": "^3.2.4",
+    "autoprefixer": "^10.5.5",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.36.0",
@@ -63,6 +65,7 @@
     "husky": "^9.1.7",
     "jsdom": "^27.0.0",
     "lint-staged": "^16.2.3",
+    "postcss": "^8.5.28",
     "prettier": "^3.6.2",
     "stylelint": "^16.24.0",
     "stylelint-config-standard": "^39.0.0",
@@ -92,5 +95,10 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not dead"
+  ]
 }

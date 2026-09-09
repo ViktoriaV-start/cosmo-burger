@@ -7,7 +7,7 @@ import {
 
 import styles from './app-header.module.css';
 
-export const AppHeader = (): React.JSX.Element => {
+export const AppHeader = () => {
   return (
     <header className={styles.header}>
       <nav className={`${styles.menu} p-4`}>

@@ -2,6 +2,52 @@
   display: flex;
   flex-direction: column;
   width: 600px;
+  min-height: 0;
   padding-bottom: 20px;
-  color: var(--text-primary-color);
+  color: var(--text-primary-color, #f2f2f3);
+}
+
+.order_list {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.order_ingredient {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.ingredient_locked {
+  flex-shrink: 0;
+}
+
+.scroll_item {
+  flex-shrink: 1;
+  min-height: 0;
+}
+
+.scroll_area {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.fillings_list {
+  display: flex;
+  flex-direction: column;
+}
+
+.order_total {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.currency {
+  width: 36px;
+  height: 36px;
 }
