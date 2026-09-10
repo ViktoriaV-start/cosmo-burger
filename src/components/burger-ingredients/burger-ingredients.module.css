@@ -39,6 +39,7 @@
   align-items: center;
   height: 208px;
   text-align: center;
+  cursor: pointer;
 }
 
 .ingredient_image {

@@ -7,15 +7,16 @@ import {
 import classnames from 'classnames';
 import { useMemo } from 'react';
 
-import type { TOrder } from '@utils/types';
+import type { Order } from '@utils/types';
 
 import styles from './burger-constructor.module.css';
 
-type TBurgerConstructorProps = {
-  order: TOrder | null;
+type BurgerConstructorProps = {
+  order: Order | null;
+  onOrderClick: () => void;
 };
 
-export const BurgerConstructor = ({ order }: TBurgerConstructorProps) => {
+export const BurgerConstructor = ({ order, onOrderClick }: BurgerConstructorProps) => {
   const totalPrice = useMemo(() => {
     if (!order) {
       return 0;
@@ -90,7 +91,7 @@ export const BurgerConstructor = ({ order }: TBurgerConstructorProps) => {
       <div className={classnames(styles.order_total, 'mt-10', 'mb-10')}>
         <p className="text text_type_digits-medium mr-2">{totalPrice}</p>
         <CurrencyIcon className={classnames(styles.currency, 'mr-10')} type="primary" />
-        <Button size="medium" type="primary" htmlType={'button'}>
+        <Button size="medium" type="primary" htmlType={'button'} onClick={onOrderClick}>
           Оформить заказ
         </Button>
       </div>

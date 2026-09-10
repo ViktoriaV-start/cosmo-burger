@@ -2,16 +2,22 @@ import { getHttpErrorMessage } from '@/api/http-error.ts';
 import { ingredientsApi } from '@/api/ingredients-api.ts';
 import { useEffect, useState } from 'react';
 
-import type { TIngredient, TOrder } from '@utils/types.ts';
+import type { Ingredient, Order } from '@utils/types.ts';
 
 type UseAppReturn = {
-  ingredients: TIngredient[];
+  ingredients: Ingredient[];
   isLoading: boolean;
   errorMessage: string | null;
-  order: TOrder | null;
+  order: Order | null;
+  selectedIngredient: Ingredient | null;
+  onIngredientClick: (ingredient: Ingredient) => void;
+  onCloseIngredientModal: () => void;
+  orderNumber: number | null;
+  onOrderClick: () => void;
+  onCloseOrderModal: () => void;
 };
 
-const findIngredient = (list: TIngredient[], id: string): TIngredient | null => {
+const findIngredient = (list: Ingredient[], id: string): Ingredient | null => {
   const ingredient = list.find(({ _id }) => _id === id);
 
   if (!ingredient) {
@@ -22,12 +28,14 @@ const findIngredient = (list: TIngredient[], id: string): TIngredient | null => 
 };
 
 export const useApp = (): UseAppReturn => {
-  const [ingredients, setIngredients] = useState<TIngredient[]>([]);
-  const [order, setOrder] = useState<TOrder | null>(null);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [order, setOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
+  const [orderNumber, setOrderNumber] = useState<number | null>(null);
 
-  const createOrder = (list: TIngredient[]): TOrder | null => {
+  const createOrder = (list: Ingredient[]): Order | null => {
     if (list.length === 0) {
       return null;
     }
@@ -44,7 +52,7 @@ export const useApp = (): UseAppReturn => {
       findIngredient(list, '692889f16bf770001bfeb4d8'),
       findIngredient(list, '692889f16bf770001bfeb4d9'),
       findIngredient(list, '692889f16bf770001bfeb4da'),
-    ].filter((ingredient): ingredient is TIngredient => ingredient !== null);
+    ].filter((ingredient): ingredient is Ingredient => ingredient !== null);
 
     return { bun, fillings };
   };
@@ -83,5 +91,32 @@ export const useApp = (): UseAppReturn => {
     };
   }, []);
 
-  return { ingredients, isLoading, errorMessage, order };
+  const onIngredientClick = (ingredient: Ingredient): void => {
+    setSelectedIngredient(ingredient);
+  };
+
+  const onCloseIngredientModal = (): void => {
+    setSelectedIngredient(null);
+  };
+
+  const onOrderClick = (): void => {
+    setOrderNumber(Math.floor(100000 + Math.random() * 900000));
+  };
+
+  const onCloseOrderModal = (): void => {
+    setOrderNumber(null);
+  };
+
+  return {
+    ingredients,
+    isLoading,
+    errorMessage,
+    order,
+    selectedIngredient,
+    onIngredientClick,
+    onCloseIngredientModal,
+    orderNumber,
+    onOrderClick,
+    onCloseOrderModal,
+  };
 };

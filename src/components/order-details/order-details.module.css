@@ -1,3 +1,32 @@
-.order-details {
+.order_details {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+}
+
+.order_number {
+  margin: 0 auto;
+  font-weight: 400;
+}
+
+.check_icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(
+    circle,
+    rgb(76 76 255 / 35%) 0%,
+    rgb(76 76 255 / 15%) 45%,
+    rgb(76 76 255 / 0%) 75%
+  );
+  border-radius: 50%;
+}
+
+.check_icon svg {
+  width: 48px;
+  height: 48px;
 }

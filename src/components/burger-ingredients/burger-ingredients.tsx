@@ -2,33 +2,45 @@ import { Counter, CurrencyIcon, Tab } from '@krgaa/react-developer-burger-ui-com
 import classnames from 'classnames';
 import { useMemo } from 'react';
 
-import type { TIngredient } from '@utils/types';
+import type { Ingredient } from '@utils/types';
 
 import styles from './burger-ingredients.module.css';
 
-type TBurgerIngredientsProps = {
-  ingredients: TIngredient[];
+type BurgerIngredientsProps = {
+  ingredients: Ingredient[];
+  onIngredientClick: (ingredient: Ingredient) => void;
 };
 
-export const BurgerIngredients = ({ ingredients }: TBurgerIngredientsProps) => {
-  const createPackElement = (ingredients: TIngredient[]) => {
-    const packElement = ingredients.map(({ _id, name, image_large, price }) => (
-      <li key={_id} className={styles.burger_ingredient}>
-        <img
-          className={classnames(styles.ingredient_image, 'pl-4 pr-4')}
-          src={image_large}
-          alt={name}
-        />
-        <p
-          className={`${styles.ingredient_price} text text_type_digits-default mt-1 mb-1`}
+export const BurgerIngredients = ({
+  ingredients,
+  onIngredientClick,
+}: BurgerIngredientsProps) => {
+  const createPackElement = (ingredients: Ingredient[]) => {
+    const packElement = ingredients.map((ingredient) => {
+      const { _id, name, image_large, price } = ingredient;
+
+      return (
+        <li
+          key={_id}
+          className={styles.burger_ingredient}
+          onClick={() => onIngredientClick(ingredient)}
         >
-          {price}
-          <CurrencyIcon type="primary" />
-        </p>
-        <p className="text text_type_main-default mt-2">{name}</p>
-        <Counter count={1} size="default" extraClass={styles.ingredient_counter} />
-      </li>
-    ));
+          <img
+            className={classnames(styles.ingredient_image, 'pl-4 pr-4')}
+            src={image_large}
+            alt={name}
+          />
+          <p
+            className={`${styles.ingredient_price} text text_type_digits-default mt-1 mb-1`}
+          >
+            {price}
+            <CurrencyIcon type="primary" />
+          </p>
+          <p className="text text_type_main-default mt-2">{name}</p>
+          <Counter count={1} size="default" extraClass={styles.ingredient_counter} />
+        </li>
+      );
+    });
 
     return packElement;
   };
