@@ -1,4 +1,4 @@
-export type TIngredient = {
+export type Ingredient = {
   _id: string;
   name: string;
   type: string;
@@ -11,4 +11,9 @@ export type TIngredient = {
   image_large: string;
   image_mobile: string;
   __v: number;
+};
+
+export type Order = {
+  bun: Ingredient;
+  fillings: Ingredient[];
 };

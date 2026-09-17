@@ -64,8 +64,8 @@ export default defineConfig(
           prefer: 'type-imports',
         },
       ],
-      '@typescript-eslint/explicit-function-return-type': 'error',
-      '@typescript-eslint/explicit-module-boundary-types': 'error',
+      //'@typescript-eslint/explicit-function-return-type': 'error',
+      // '@typescript-eslint/explicit-module-boundary-types': 'error',
       '@typescript-eslint/no-import-type-side-effects': 'error',
       '@typescript-eslint/no-unused-expressions': [
         'error',
@@ -112,7 +112,7 @@ export default defineConfig(
             'side-effect-style',
             'style',
           ],
-                    internalPattern: [
+          internalPattern: [
             '^/',
             '^@components/',
             '^@contexts/',
@@ -134,7 +134,7 @@ export default defineConfig(
       'react/prop-types': 'off',
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'unused-imports/no-unused-imports': 'error',
-      'react-hooks/exhaustive-deps': 'off'
+      'react-hooks/exhaustive-deps': 'off',
     },
     settings: {
       'css-modules': {

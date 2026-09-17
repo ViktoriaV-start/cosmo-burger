@@ -1,6 +1,6 @@
-import type { TIngredient } from '@utils/types.ts';
+import type { Ingredient } from '@utils/types.ts';
 
-export const ingredients: TIngredient[] = [
+export const ingredients: Ingredient[] = [
   {
     _id: '60666c42cc7b410027a1a9b1',
     name: 'Краторная булка N-200i',
@@ -9,7 +9,7 @@ export const ingredients: TIngredient[] = [
     fat: 24,
     carbohydrates: 53,
     calories: 420,
-    price: 1255,
+    price: 20,
     image: 'https://code.s3.yandex.net/react/code/bun-02.png',
     image_mobile: 'https://code.s3.yandex.net/react/code/bun-02-mobile.png',
     image_large: 'https://code.s3.yandex.net/react/code/bun-02-large.png',
@@ -23,7 +23,7 @@ export const ingredients: TIngredient[] = [
     fat: 800,
     carbohydrates: 300,
     calories: 2674,
-    price: 3000,
+    price: 300,
     image: 'https://code.s3.yandex.net/react/code/meat-04.png',
     image_mobile: 'https://code.s3.yandex.net/react/code/meat-04-mobile.png',
     image_large: 'https://code.s3.yandex.net/react/code/meat-04-large.png',
@@ -36,7 +36,7 @@ export const ingredients: TIngredient[] = [
     proteins: 420,
     fat: 142,
     carbohydrates: 242,
-    calories: 4242,
+    calories: 424,
     price: 424,
     image: 'https://code.s3.yandex.net/react/code/meat-01.png',
     image_mobile: 'https://code.s3.yandex.net/react/code/meat-01-mobile.png',
@@ -65,7 +65,7 @@ export const ingredients: TIngredient[] = [
     fat: 244,
     carbohydrates: 33,
     calories: 420,
-    price: 1337,
+    price: 133,
     image: 'https://code.s3.yandex.net/react/code/meat-02.png',
     image_mobile: 'https://code.s3.yandex.net/react/code/meat-02-mobile.png',
     image_large: 'https://code.s3.yandex.net/react/code/meat-02-large.png',
@@ -163,7 +163,7 @@ export const ingredients: TIngredient[] = [
     fat: 2,
     carbohydrates: 3,
     calories: 6,
-    price: 4400,
+    price: 440,
     image: 'https://code.s3.yandex.net/react/code/salad.png',
     image_mobile: 'https://code.s3.yandex.net/react/code/salad-mobile.png',
     image_large: 'https://code.s3.yandex.net/react/code/salad-large.png',
@@ -191,7 +191,7 @@ export const ingredients: TIngredient[] = [
     fat: 48,
     carbohydrates: 420,
     calories: 3377,
-    price: 4142,
+    price: 412,
     image: 'https://code.s3.yandex.net/react/code/cheese.png',
     image_mobile: 'https://code.s3.yandex.net/react/code/cheese-mobile.png',
     image_large: 'https://code.s3.yandex.net/react/code/cheese-large.png',

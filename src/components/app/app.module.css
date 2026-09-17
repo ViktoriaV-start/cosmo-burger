@@ -3,7 +3,7 @@
   flex-direction: column;
   height: 100vh;
   color: var(--text-primary-color);
-  background-color: var(--background-alt);
+  background-color: var(--background-alt, #131316);
 }
 
 .title {
