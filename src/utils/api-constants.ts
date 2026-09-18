@@ -8,3 +8,4 @@ export const METHODS = {
 } as const;
 
 export const RESOURCE_API_URL = '/api/ingredients';
+export const PLACE_ORDER_API_URL = '/api/orders';

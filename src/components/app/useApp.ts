@@ -7,6 +7,13 @@ import {
   selectIngredientsError,
   selectIngredientsLoading,
 } from '@services/ingredients/actions.ts';
+import { placeOrder } from '@services/order/actions.ts';
+import { getOrderNumber } from '@services/order/selectors.ts';
+import {
+  clearSelectedIngredient,
+  setSelectedIngredient,
+} from '@services/selected-ingredient/reducer.ts';
+import { getSelectedIngredient } from '@services/selected-ingredient/selectors.ts';
 
 import type { AppDispatch } from '@services/store.ts';
 import type { Ingredient, Order } from '@utils/types.ts';
@@ -39,10 +46,11 @@ export const useApp = (): UseAppReturn => {
   const ingredients: Ingredient[] = useSelector(selectIngredients);
   const isLoading: boolean = useSelector(selectIngredientsLoading);
   const errorMessage: string | null = useSelector(selectIngredientsError);
+  const selectedIngredient = useSelector(getSelectedIngredient);
+  const placedOrderNumber = useSelector(getOrderNumber);
 
   const [order, setOrder] = useState<Order | null>(null);
-  const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
-  const [orderNumber, setOrderNumber] = useState<number | null>(null);
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
   const createOrder = (list: Ingredient[]): Order | null => {
     if (list.length === 0) {
@@ -78,20 +86,26 @@ export const useApp = (): UseAppReturn => {
     setOrder(createOrder(ingredients));
   }, [ingredients]);
 
+  useEffect(() => {
+    if (placedOrderNumber !== null) {
+      setIsOrderModalOpen(true);
+    }
+  }, [placedOrderNumber]);
+
   const onIngredientClick = (ingredient: Ingredient): void => {
-    setSelectedIngredient(ingredient);
+    dispatch(setSelectedIngredient(ingredient));
   };
 
   const onCloseIngredientModal = (): void => {
-    setSelectedIngredient(null);
+    dispatch(clearSelectedIngredient());
   };
 
   const onOrderClick = (): void => {
-    setOrderNumber(Math.floor(100000 + Math.random() * 900000));
+    void dispatch(placeOrder());
   };
 
   const onCloseOrderModal = (): void => {
-    setOrderNumber(null);
+    setIsOrderModalOpen(false);
   };
 
   return {
@@ -102,7 +116,7 @@ export const useApp = (): UseAppReturn => {
     selectedIngredient,
     onIngredientClick,
     onCloseIngredientModal,
-    orderNumber,
+    orderNumber: isOrderModalOpen ? placedOrderNumber : null,
     onOrderClick,
     onCloseOrderModal,
   };

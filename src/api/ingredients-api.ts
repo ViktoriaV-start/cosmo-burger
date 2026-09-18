@@ -1,4 +1,4 @@
-import { RESOURCE_API_URL } from '@utils/api-constants.ts';
+import { PLACE_ORDER_API_URL, RESOURCE_API_URL } from '@utils/api-constants.ts';
 
 import { HttpTransport } from './http-transport';
 
@@ -11,12 +11,32 @@ type IngredientsResponse = {
   data: Ingredient[];
 };
 
+type OrderResponse = {
+  name: string;
+  order: {
+    number: number;
+  };
+  success: boolean;
+};
+
+type OrderData = {
+  ingredients: string[];
+};
+
 const isIngredientsResponse = (value: unknown): value is IngredientsResponse => {
   return (
     !!value &&
     typeof value === 'object' &&
     (value as IngredientsResponse).success === true &&
     Array.isArray((value as IngredientsResponse).data)
+  );
+};
+
+const isOrderResponse = (value: unknown): value is OrderResponse => {
+  return (
+    !!value &&
+    typeof value === 'object' &&
+    (value as IngredientsResponse).success === true
   );
 };
 
@@ -31,6 +51,19 @@ class IngredientsApi {
     }
 
     return response.data;
+  }
+
+  async placeOrder(data: OrderData, signal?: AbortSignal): Promise<OrderResponse> {
+    const response = await ingredientsApiInstance.post(PLACE_ORDER_API_URL, {
+      data,
+      signal,
+    });
+
+    if (!isOrderResponse(response)) {
+      throw new Error('Сервер вернул некорректный ответ на запрос ингредиентов');
+    }
+
+    return response;
   }
 }
 
