@@ -2,6 +2,8 @@ import { Counter, CurrencyIcon, Tab } from '@krgaa/react-developer-burger-ui-com
 import classnames from 'classnames';
 import { useMemo } from 'react';
 
+import { useBurgerIngredients } from '@components/burger-ingredients/use-burger-ingredients.ts';
+
 import type { Ingredient } from '@utils/types';
 
 import styles from './burger-ingredients.module.css';
@@ -15,6 +17,15 @@ export const BurgerIngredients = ({
   ingredients,
   onIngredientClick,
 }: BurgerIngredientsProps) => {
+  const {
+    activeTab,
+    containerRef,
+    bunsTitleRef,
+    saucesTitleRef,
+    mainsTitleRef,
+    handleScroll,
+  } = useBurgerIngredients();
+
   const createPackElement = (ingredients: Ingredient[]) => {
     const packElement = ingredients.map((ingredient) => {
       const { _id, name, image_large, price } = ingredient;
@@ -64,7 +75,7 @@ export const BurgerIngredients = ({
         <ul className={styles.menu}>
           <Tab
             value="bun"
-            active={true}
+            active={activeTab === 'bun'}
             onClick={() => {
               /* TODO */
             }}
@@ -73,7 +84,7 @@ export const BurgerIngredients = ({
           </Tab>
           <Tab
             value="main"
-            active={false}
+            active={activeTab === 'main'}
             onClick={() => {
               /* TODO */
             }}
@@ -82,7 +93,7 @@ export const BurgerIngredients = ({
           </Tab>
           <Tab
             value="sauce"
-            active={false}
+            active={activeTab === 'sauce'}
             onClick={() => {
               /* TODO */
             }}
@@ -91,23 +102,33 @@ export const BurgerIngredients = ({
           </Tab>
         </ul>
       </nav>
-      <article className={classnames(styles.ingredients_scroll, 'custom-scroll')}>
+      <article
+        ref={containerRef}
+        className={classnames(styles.ingredients_scroll, 'custom-scroll')}
+        onScroll={handleScroll}
+      >
         <div className="mb-10">
-          <h2 className="text text_type_main-medium">Булки</h2>
+          <h2 ref={bunsTitleRef} className="text text_type_main-medium">
+            Булки
+          </h2>
           <ul className={classnames(styles.ingredients_pack, 'ml-4 mr-4 pt-6')}>
             {bunsIngredients}
           </ul>
         </div>
 
         <div className="mb-10">
-          <h2 className="text text_type_main-medium">Соусы</h2>
+          <h2 ref={saucesTitleRef} className="text text_type_main-medium">
+            Соусы
+          </h2>
           <ul className={classnames(styles.ingredients_pack, 'ml-4 pt-6')}>
             {saucesIngredients}
           </ul>
         </div>
 
         <div className="mb-10">
-          <h2 className="text text_type_main-medium">Начинки</h2>
+          <h2 ref={mainsTitleRef} className="text text_type_main-medium">
+            Начинки
+          </h2>
           <ul className={classnames(styles.ingredients_pack, 'ml-4 pt-6')}>
             {mainsIngredients}
           </ul>

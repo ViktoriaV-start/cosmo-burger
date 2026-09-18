@@ -1,7 +1,14 @@
-import { getHttpErrorMessage } from '@/api/http-error.ts';
-import { ingredientsApi } from '@/api/ingredients-api.ts';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import {
+  fetchIngredients,
+  selectIngredients,
+  selectIngredientsError,
+  selectIngredientsLoading,
+} from '@services/ingredients/actions.ts';
+
+import type { AppDispatch } from '@services/store.ts';
 import type { Ingredient, Order } from '@utils/types.ts';
 
 type UseAppReturn = {
@@ -28,10 +35,12 @@ const findIngredient = (list: Ingredient[], id: string): Ingredient | null => {
 };
 
 export const useApp = (): UseAppReturn => {
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const ingredients: Ingredient[] = useSelector(selectIngredients);
+  const isLoading: boolean = useSelector(selectIngredientsLoading);
+  const errorMessage: string | null = useSelector(selectIngredientsError);
+
   const [order, setOrder] = useState<Order | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
   const [orderNumber, setOrderNumber] = useState<number | null>(null);
 
@@ -58,38 +67,16 @@ export const useApp = (): UseAppReturn => {
   };
 
   useEffect(() => {
-    const controller = new AbortController();
-
-    const getIngredients = async (): Promise<void> => {
-      setIsLoading(true);
-      setErrorMessage(null);
-
-      try {
-        const data = await ingredientsApi.getIngredients(controller.signal);
-
-        setIngredients(data);
-        setOrder(createOrder(data));
-      } catch (error) {
-        if (controller.signal.aborted) {
-          return;
-        }
-
-        setErrorMessage(
-          getHttpErrorMessage(error) ?? 'Не удалось загрузить список ингредиентов'
-        );
-      } finally {
-        if (!controller.signal.aborted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    void getIngredients();
+    const promise = dispatch(fetchIngredients());
 
     return (): void => {
-      controller.abort();
+      promise.abort();
     };
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    setOrder(createOrder(ingredients));
+  }, [ingredients]);
 
   const onIngredientClick = (ingredient: Ingredient): void => {
     setSelectedIngredient(ingredient);

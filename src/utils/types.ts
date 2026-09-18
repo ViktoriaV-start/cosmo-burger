@@ -17,3 +17,5 @@ export type Order = {
   bun: Ingredient;
   fillings: Ingredient[];
 };
+
+export type IngredientType = 'bun' | 'sauce' | 'main';
