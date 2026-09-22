@@ -1,13 +1,15 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
+import { ingredientModalSlice } from './ingredient-modal/reducer.ts';
 import { ingredientsSlice } from './ingredients/reducer.ts';
 import { orderSlice } from './order/reducer.ts';
-import { selectedIngredientSlice } from './selected-ingredient/reducer.ts';
+import { selectedIngredientsSlice } from './selected-ingredients/reducer.ts';
 
 const rootReducer = combineReducers({
   ingredients: ingredientsSlice.reducer,
   order: orderSlice.reducer,
-  selectedIngredient: selectedIngredientSlice.reducer,
+  ingredientModal: ingredientModalSlice.reducer,
+  selectedIngredients: selectedIngredientsSlice.reducer,
 });
 
 export const store = configureStore({

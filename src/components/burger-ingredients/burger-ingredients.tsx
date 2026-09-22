@@ -1,7 +1,8 @@
-import { Counter, CurrencyIcon, Tab } from '@krgaa/react-developer-burger-ui-components';
+import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import classnames from 'classnames';
 import { useMemo } from 'react';
 
+import { BurgerIngredientCard } from '@components/burger-ingredients/burger-ingredient-card.tsx';
 import { useBurgerIngredients } from '@components/burger-ingredients/use-burger-ingredients.ts';
 
 import type { Ingredient } from '@utils/types';
@@ -26,35 +27,14 @@ export const BurgerIngredients = ({
     handleScroll,
   } = useBurgerIngredients();
 
-  const createPackElement = (ingredients: Ingredient[]) => {
-    const packElement = ingredients.map((ingredient) => {
-      const { _id, name, image_large, price } = ingredient;
-
-      return (
-        <li
-          key={_id}
-          className={styles.burger_ingredient}
-          onClick={() => onIngredientClick(ingredient)}
-        >
-          <img
-            className={classnames(styles.ingredient_image, 'pl-4 pr-4')}
-            src={image_large}
-            alt={name}
-          />
-          <p
-            className={`${styles.ingredient_price} text text_type_digits-default mt-1 mb-1`}
-          >
-            {price}
-            <CurrencyIcon type="primary" />
-          </p>
-          <p className="text text_type_main-default mt-2">{name}</p>
-          <Counter count={1} size="default" extraClass={styles.ingredient_counter} />
-        </li>
-      );
-    });
-
-    return packElement;
-  };
+  const createPackElement = (ingredients: Ingredient[]) =>
+    ingredients.map((ingredient) => (
+      <BurgerIngredientCard
+        key={ingredient._id}
+        ingredient={ingredient}
+        onClick={onIngredientClick}
+      />
+    ));
 
   const { buns, sauces, mains } = useMemo(
     () => ({

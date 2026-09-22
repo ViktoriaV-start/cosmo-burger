@@ -1,9 +1,11 @@
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { AppHeader } from '@components/app-header/app-header';
 import { useApp } from '@components/app/useApp.ts';
 import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
+import { BurgerIngredients } from '@components/burger-ingredients';
 import { IngredientDetails } from '@components/ingredient-details/ingredient-details';
 import { Modal } from '@components/modal/modal';
 import { OrderDetails } from '@components/order-details/order-details';
@@ -15,48 +17,48 @@ export const App = () => {
     ingredients,
     isLoading,
     errorMessage,
-    order,
-    selectedIngredient,
+    ingredientModal,
     onIngredientClick,
     onCloseIngredientModal,
     orderNumber,
-    onOrderClick,
     onCloseOrderModal,
   } = useApp();
 
   return (
-    <div className={styles.app}>
-      <AppHeader />
-      <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
-        Соберите бургер
-      </h1>
-      {isLoading && <Preloader />}
-      {errorMessage && !isLoading && (
-        <p className="text text_type_main-default pl-5 pr-5">{errorMessage}</p>
-      )}
+    <DndProvider backend={HTML5Backend}>
+      <div className={styles.app}>
+        <AppHeader />
+        <h1 className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
+          Соберите бургер
+        </h1>
+        {isLoading && <Preloader />}
+        {errorMessage && !isLoading && (
+          <p className="text text_type_main-default pl-5 pr-5">{errorMessage}</p>
+        )}
 
-      {!isLoading && !errorMessage && (
-        <main className={`${styles.main} pl-5 pr-5`}>
-          <BurgerIngredients
-            ingredients={ingredients}
-            onIngredientClick={onIngredientClick}
-          />
-          <BurgerConstructor order={order} onOrderClick={onOrderClick} />
-        </main>
-      )}
+        {!isLoading && !errorMessage && (
+          <main className={`${styles.main} pl-5 pr-5`}>
+            <BurgerIngredients
+              ingredients={ingredients}
+              onIngredientClick={onIngredientClick}
+            />
+            <BurgerConstructor />
+          </main>
+        )}
 
-      {selectedIngredient && (
-        <Modal header="Детали ингредиента" onClose={onCloseIngredientModal}>
-          <IngredientDetails ingredient={selectedIngredient} />
-        </Modal>
-      )}
+        {ingredientModal && (
+          <Modal header="Детали ингредиента" onClose={onCloseIngredientModal}>
+            <IngredientDetails ingredient={ingredientModal} />
+          </Modal>
+        )}
 
-      {orderNumber !== null && (
-        <Modal onClose={onCloseOrderModal}>
-          <OrderDetails orderNumber={orderNumber} />
-        </Modal>
-      )}
-    </div>
+        {orderNumber !== null && (
+          <Modal onClose={onCloseOrderModal}>
+            <OrderDetails orderNumber={orderNumber} />
+          </Modal>
+        )}
+      </div>
+    </DndProvider>
   );
 };
 
