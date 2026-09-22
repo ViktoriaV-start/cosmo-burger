@@ -6,7 +6,7 @@ import { addSelectedIngredient } from '@services/selected-ingredients/reducer.ts
 import { getSelectedIngredients } from '@services/selected-ingredients/selectors.ts';
 
 import type { AppDispatch } from '@services/store.ts';
-import type { Ingredient, Order } from '@utils/types.ts';
+import type { Ingredient, Order } from '@utils';
 
 type UseBurgerConstructor = {
   order: Order;

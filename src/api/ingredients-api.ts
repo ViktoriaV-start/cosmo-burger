@@ -1,8 +1,6 @@
-import { PLACE_ORDER_API_URL, RESOURCE_API_URL } from '@utils/api-constants.ts';
+import { type Ingredient, PLACE_ORDER_API_URL, RESOURCE_API_URL } from '@utils';
 
 import { HttpTransport } from './http-transport';
-
-import type { Ingredient } from '@utils/types.ts';
 
 const ingredientsApiInstance = new HttpTransport();
 

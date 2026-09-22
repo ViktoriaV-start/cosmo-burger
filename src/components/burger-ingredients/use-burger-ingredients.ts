@@ -1,6 +1,6 @@
 import { type RefObject, useRef, useState } from 'react';
 
-import type { IngredientType } from '@utils/types.ts';
+import type { IngredientType } from '@utils';
 
 export const useBurgerIngredients = () => {
   const [activeTab, setActiveTab] = useState<IngredientType>('bun');

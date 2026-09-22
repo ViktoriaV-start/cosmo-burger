@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { fetchIngredients } from './actions.ts';
 
-import type { Ingredient } from '@utils/types.ts';
+import type { Ingredient } from '@utils';
 
 type IngredientsState = {
   items: Ingredient[];

@@ -9,7 +9,7 @@ import {
 } from './selectors.ts';
 
 import type { RootState } from '@services/store.ts';
-import type { Ingredient } from '@utils/types.ts';
+import type { Ingredient } from '@utils';
 
 export const fetchIngredients = createAsyncThunk<
   Ingredient[],

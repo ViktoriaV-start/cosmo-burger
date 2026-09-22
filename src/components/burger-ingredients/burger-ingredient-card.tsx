@@ -1,10 +1,9 @@
 import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
+import { INGREDIENT_DRAG_TYPE } from '@utils';
 import classnames from 'classnames';
 import { useDrag } from 'react-dnd';
 
-import { INGREDIENT_DRAG_TYPE } from '@utils/dnd-constants.ts';
-
-import type { Ingredient } from '@utils/types';
+import type { Ingredient } from '@utils';
 
 import styles from './burger-ingredients.module.css';
 

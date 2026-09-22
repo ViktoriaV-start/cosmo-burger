@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { BurgerIngredientCard } from '@components/burger-ingredients/burger-ingredient-card.tsx';
 import { useBurgerIngredients } from '@components/burger-ingredients/use-burger-ingredients.ts';
 
-import type { Ingredient } from '@utils/types';
+import type { Ingredient } from '@utils';
 
 import styles from './burger-ingredients.module.css';
 

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { Ingredient } from '@utils/types.ts';
+import type { Ingredient } from '@utils';
 
 type SelectedIngredientState = Ingredient | null;
 

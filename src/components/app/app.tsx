@@ -2,13 +2,13 @@ import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import { AppHeader } from '@components/app-header/app-header';
+import { AppHeader } from '@components/app-header';
 import { useApp } from '@components/app/useApp.ts';
-import { BurgerConstructor } from '@components/burger-constructor/burger-constructor';
+import { BurgerConstructor } from '@components/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients';
-import { IngredientDetails } from '@components/ingredient-details/ingredient-details';
-import { Modal } from '@components/modal/modal';
-import { OrderDetails } from '@components/order-details/order-details';
+import { IngredientDetails } from '@components/ingredient-details';
+import { Modal } from '@components/modal';
+import { OrderDetails } from '@components/order-details';
 
 import styles from './app.module.css';
 

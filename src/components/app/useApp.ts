@@ -15,7 +15,7 @@ import {
 import { getOrderNumber } from '@services/order/selectors.ts';
 
 import type { AppDispatch } from '@services/store.ts';
-import type { Ingredient } from '@utils/types.ts';
+import type { Ingredient } from '@utils';
 
 type UseAppReturn = {
   ingredients: Ingredient[];

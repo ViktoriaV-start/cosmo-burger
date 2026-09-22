@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { Ingredient, Order } from '@utils/types.ts';
+import type { Ingredient, Order } from '@utils';
 
 const initialSelectedIngredientsState: Order = {
   bun: null,

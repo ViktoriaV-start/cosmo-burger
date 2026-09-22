@@ -4,15 +4,14 @@ import {
   CurrencyIcon,
   DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
+import { INGREDIENT_DRAG_TYPE } from '@utils';
 import classnames from 'classnames';
 import { useMemo } from 'react';
 import { useDrop } from 'react-dnd';
 
-import { INGREDIENT_DRAG_TYPE } from '@utils/dnd-constants';
-
 import { useBurgerConstructor } from './use-burger-constructor';
 
-import type { Ingredient } from '@utils/types';
+import type { Ingredient } from '@utils';
 
 import styles from './burger-constructor.module.css';
 

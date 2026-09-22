@@ -1,5 +1,4 @@
-import { BASE_API_URL, METHODS } from '@utils/api-constants.ts';
-import { queryStringify } from '@utils/query-stringify.ts';
+import { BASE_API_URL, METHODS, queryStringify } from '@utils';
 
 import { HttpError, NetworkError } from './http-error';
 

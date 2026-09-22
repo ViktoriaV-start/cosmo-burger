@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 
-import type { Ingredient } from '@utils/types';
+import type { Ingredient } from '@utils';
 
 import styles from './ingredient-details.module.css';
 
