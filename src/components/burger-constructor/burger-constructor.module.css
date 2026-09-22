@@ -25,6 +25,18 @@
   flex-shrink: 0;
 }
 
+.dragging {
+  opacity: 0;
+}
+
+.drag_layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+
 .placeholder {
   display: flex;
   justify-content: center;

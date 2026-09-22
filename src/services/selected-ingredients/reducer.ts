@@ -26,6 +26,22 @@ export const selectedIngredientsSlice = createSlice({
         ingredients: state.ingredients.filter(({ id }) => id !== action.payload),
       };
     },
+    moveSelectedIngredient: (
+      state,
+      action: PayloadAction<{ dragIndex: number; hoverIndex: number }>
+    ) => {
+      const { dragIndex, hoverIndex } = action.payload;
+      const ingredients = [...state.ingredients];
+      const [draggedIngredient] = ingredients.splice(dragIndex, 1);
+
+      if (!draggedIngredient) {
+        return state;
+      }
+
+      ingredients.splice(hoverIndex, 0, draggedIngredient);
+
+      return { ...state, ingredients };
+    },
     clearSelectedIngredients: () => initialSelectedIngredientsState,
   },
 });
@@ -33,5 +49,6 @@ export const selectedIngredientsSlice = createSlice({
 export const {
   addSelectedIngredient,
   removeSelectedIngredient,
+  moveSelectedIngredient,
   clearSelectedIngredients,
 } = selectedIngredientsSlice.actions;

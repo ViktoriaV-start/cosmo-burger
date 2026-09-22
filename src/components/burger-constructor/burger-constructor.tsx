@@ -2,13 +2,14 @@ import {
   Button,
   ConstructorElement,
   CurrencyIcon,
-  DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
 import { INGREDIENT_DRAG_TYPE } from '@utils';
 import classnames from 'classnames';
 import { useMemo } from 'react';
 import { useDrop } from 'react-dnd';
 
+import { BurgerConstructorDragLayer } from './burger-constructor-drag-layer';
+import { BurgerConstructorIngredient } from './burger-constructor-ingredient';
 import { useBurgerConstructor } from './use-burger-constructor';
 
 import type { Ingredient } from '@utils';
@@ -16,27 +17,30 @@ import type { Ingredient } from '@utils';
 import styles from './burger-constructor.module.css';
 
 export const BurgerConstructor = () => {
-  const { order, onIngredientDrop, onOrderClick } = useBurgerConstructor();
+  const {
+    order,
+    totalPrice,
+    onIngredientDrop,
+    onIngredientMove,
+    onOrderClick,
+    onDeleteClick,
+  } = useBurgerConstructor();
 
   const [, dropRef] = useDrop<Ingredient>({
     accept: INGREDIENT_DRAG_TYPE,
     drop: (ingredient) => onIngredientDrop(ingredient),
   });
 
-  const totalPrice = useMemo(
-    () =>
-      (order.bun?.price ?? 0) * 2 +
-      order.ingredients.reduce((sum, { price }) => sum + price, 0),
-    [order]
-  );
-
   const orderIngredients = useMemo(
     () =>
-      order.ingredients.map(({ id, _id, name, price, image_mobile }) => (
-        <li key={id ?? _id} className={styles.order_ingredient}>
-          <DragIcon type="primary" />
-          <ConstructorElement price={price} text={name} thumbnail={image_mobile} />
-        </li>
+      order.ingredients.map((ingredient, index) => (
+        <BurgerConstructorIngredient
+          key={ingredient.id ?? ingredient._id}
+          ingredient={ingredient}
+          index={index}
+          onMove={onIngredientMove}
+          onDeleteClick={onDeleteClick}
+        />
       )),
     [order]
   );
@@ -50,6 +54,7 @@ export const BurgerConstructor = () => {
       }}
       className={classnames(styles.burger_constructor, 'mt-25', 'pl-10')}
     >
+      <BurgerConstructorDragLayer />
       <ul className={styles.order_list}>
         <li
           className={classnames(
