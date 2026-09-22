@@ -1,14 +1,17 @@
 import { nanoid } from '@reduxjs/toolkit';
-import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { placeOrder } from '@services/order/actions.ts';
+import { getOrderNumber } from '@services/order/selectors.ts';
 import {
   addSelectedIngredient,
   moveSelectedIngredient,
   removeSelectedIngredient,
 } from '@services/selected-ingredients/reducer.ts';
-import { getSelectedIngredients } from '@services/selected-ingredients/selectors.ts';
+import {
+  getSelectedIngredients,
+  getTotalPrice,
+} from '@services/selected-ingredients/selectors.ts';
 
 import type { AppDispatch } from '@services/store.ts';
 import type { Ingredient, Order } from '@utils';
@@ -16,6 +19,7 @@ import type { Ingredient, Order } from '@utils';
 type UseBurgerConstructor = {
   order: Order;
   totalPrice: number;
+  isOrderPlaced: boolean;
   onOrderClick: () => void;
   onIngredientDrop: (ingredient: Ingredient) => void;
   onIngredientMove: (dragIndex: number, hoverIndex: number) => void;
@@ -25,6 +29,10 @@ type UseBurgerConstructor = {
 export const useBurgerConstructor = (): UseBurgerConstructor => {
   const dispatch = useDispatch<AppDispatch>();
   const order = useSelector(getSelectedIngredients);
+  const totalPrice = useSelector(getTotalPrice);
+  const placedOrderNumber = useSelector(getOrderNumber);
+
+  const isOrderPlaced = !!placedOrderNumber;
 
   const onIngredientDrop = (ingredient: Ingredient): void => {
     dispatch(addSelectedIngredient({ ...ingredient, id: nanoid() }));
@@ -38,13 +46,6 @@ export const useBurgerConstructor = (): UseBurgerConstructor => {
     void dispatch(placeOrder());
   };
 
-  const totalPrice = useMemo(
-    () =>
-      (order.bun?.price ?? 0) * 2 +
-      order.ingredients.reduce((sum, { price }) => sum + price, 0),
-    [order]
-  );
-
   const onDeleteClick = (ingredientId: string) => {
     dispatch(removeSelectedIngredient(ingredientId));
   };
@@ -52,6 +53,7 @@ export const useBurgerConstructor = (): UseBurgerConstructor => {
   return {
     order,
     totalPrice,
+    isOrderPlaced,
     onIngredientDrop,
     onIngredientMove,
     onOrderClick,

@@ -20,6 +20,7 @@ export const BurgerConstructor = () => {
   const {
     order,
     totalPrice,
+    isOrderPlaced,
     onIngredientDrop,
     onIngredientMove,
     onOrderClick,
@@ -122,7 +123,13 @@ export const BurgerConstructor = () => {
       <div className={classnames(styles.order_total, 'mt-10', 'mb-10')}>
         <p className="text text_type_digits-medium mr-2">{totalPrice}</p>
         <CurrencyIcon className={classnames(styles.currency, 'mr-10')} type="primary" />
-        <Button size="medium" type="primary" htmlType={'button'} onClick={onOrderClick}>
+        <Button
+          disabled={isOrderPlaced}
+          size="medium"
+          type="primary"
+          htmlType={'button'}
+          onClick={onOrderClick}
+        >
           Оформить заказ
         </Button>
       </div>
