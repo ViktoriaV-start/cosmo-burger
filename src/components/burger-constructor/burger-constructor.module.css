@@ -37,7 +37,7 @@
   pointer-events: none;
 }
 
-.placeholder {
+.dropSlot {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,6 +48,12 @@
   color: var(--text-primary-color, #f2f2f3);
   background-color: #2f2f37;
   border-radius: 96px;
+}
+
+.dropSlot:hover {
+  background: linear-gradient(63.18deg, #801ab3, #4c4cff);
+  backdrop-filter: blur(10px) brightness(1.15);
+  backdrop-filter: blur(10px) brightness(1.15);
 }
 
 .scroll_item {

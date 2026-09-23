@@ -73,9 +73,7 @@ export const BurgerConstructor = () => {
               type="top"
             />
           ) : (
-            <div
-              className={classnames(styles.placeholder, 'text text_type_main-default')}
-            >
+            <div className={classnames(styles.dropSlot, 'text text_type_main-default')}>
               Выберите булки
             </div>
           )}
@@ -87,7 +85,7 @@ export const BurgerConstructor = () => {
               <ul className={styles.fillings_list}>{orderIngredients}</ul>
             ) : (
               <div
-                className={classnames(styles.placeholder, 'text text_type_main-default')}
+                className={classnames(styles.dropSlot, 'text text_type_main-default')}
               >
                 Выберите начинку
               </div>
@@ -111,9 +109,7 @@ export const BurgerConstructor = () => {
               type="bottom"
             />
           ) : (
-            <div
-              className={classnames(styles.placeholder, 'text text_type_main-default')}
-            >
+            <div className={classnames(styles.dropSlot, 'text text_type_main-default')}>
               Выберите булки
             </div>
           )}
