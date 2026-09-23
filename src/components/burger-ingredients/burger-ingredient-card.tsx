@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
 
-import { getIngredientCounts } from '@services/selected-ingredients/selectors.ts';
+import { getIngredientCounts } from '@services/selected-ingredients/reducer.ts';
 
 import type { RootState } from '@services/store.ts';
 import type { Ingredient } from '@utils';

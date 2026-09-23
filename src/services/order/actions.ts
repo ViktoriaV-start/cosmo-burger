@@ -2,7 +2,7 @@ import { getHttpErrorMessage } from '@/api/http-error.ts';
 import { ingredientsApi } from '@/api/ingredients-api.ts';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getSelectedIngredients } from '@services/selected-ingredients/selectors.ts';
+import { getSelectedIngredients } from '@services/selected-ingredients/reducer.ts';
 
 import type { RootState } from '@services/store.ts';
 

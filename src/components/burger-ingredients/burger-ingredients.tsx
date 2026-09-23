@@ -2,8 +2,8 @@ import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import classnames from 'classnames';
 import { useMemo } from 'react';
 
-import { BurgerIngredientCard } from '@components/burger-ingredients/burger-ingredient-card.tsx';
-import { useBurgerIngredients } from '@components/burger-ingredients/use-burger-ingredients.ts';
+import { BurgerIngredientCard } from './burger-ingredient-card';
+import { useBurgerIngredients } from './use-burger-ingredients';
 
 import type { Ingredient } from '@utils';
 

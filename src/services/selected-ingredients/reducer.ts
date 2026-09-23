@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { Ingredient, Order } from '@utils';
@@ -44,6 +44,30 @@ export const selectedIngredientsSlice = createSlice({
     },
     clearSelectedIngredients: () => initialSelectedIngredientsState,
   },
+  selectors: {
+    getSelectedIngredients: (state) => state,
+    getTotalPrice: createSelector(
+      [(state: Order) => state.bun, (state: Order) => state.ingredients],
+      (bun, ingredients) =>
+        (bun?.price ?? 0) * 2 + ingredients.reduce((sum, { price }) => sum + price, 0)
+    ),
+    getIngredientCounts: createSelector(
+      [(state: Order) => state.bun, (state: Order) => state.ingredients],
+      (bun, ingredients) => {
+        const counts: Record<string, number> = {};
+
+        if (bun) {
+          counts[bun._id] = 2;
+        }
+
+        ingredients.forEach(({ _id }) => {
+          counts[_id] = (counts[_id] ?? 0) + 1;
+        });
+
+        return counts;
+      }
+    ),
+  },
 });
 
 export const {
@@ -52,3 +76,6 @@ export const {
   moveSelectedIngredient,
   clearSelectedIngredients,
 } = selectedIngredientsSlice.actions;
+
+export const { getSelectedIngredients, getTotalPrice, getIngredientCounts } =
+  selectedIngredientsSlice.selectors;

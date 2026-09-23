@@ -40,4 +40,12 @@ export const ingredientsSlice = createSlice({
         state.error = action.payload ?? 'Не удалось загрузить список ингредиентов';
       });
   },
+  selectors: {
+    getIngredients: (state) => state.items,
+    getIngredientsLoading: (state) => state.isLoading,
+    getIngredientsError: (state) => state.error,
+  },
 });
+
+export const { getIngredients, getIngredientsLoading, getIngredientsError } =
+  ingredientsSlice.selectors;

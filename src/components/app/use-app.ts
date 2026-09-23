@@ -3,16 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   clearIngredientModal,
+  getIngredientModal,
   setIngredientModal,
 } from '@services/ingredient-modal/reducer.ts';
-import { getIngredientModal } from '@services/ingredient-modal/selectors.ts';
+import { fetchIngredients } from '@services/ingredients/actions.ts';
 import {
-  fetchIngredients,
-  selectIngredients,
-  selectIngredientsError,
-  selectIngredientsLoading,
-} from '@services/ingredients/actions.ts';
-import { getOrderNumber } from '@services/order/selectors.ts';
+  getIngredients,
+  getIngredientsError,
+  getIngredientsLoading,
+} from '@services/ingredients/reducer.ts';
+import { getOrderNumber } from '@services/order/reducer.ts';
 
 import type { AppDispatch } from '@services/store.ts';
 import type { Ingredient } from '@utils';
@@ -30,9 +30,9 @@ type UseAppReturn = {
 
 export const useApp = (): UseAppReturn => {
   const dispatch = useDispatch<AppDispatch>();
-  const ingredients: Ingredient[] = useSelector(selectIngredients);
-  const isLoading: boolean = useSelector(selectIngredientsLoading);
-  const errorMessage: string | null = useSelector(selectIngredientsError);
+  const ingredients: Ingredient[] = useSelector(getIngredients);
+  const isLoading: boolean = useSelector(getIngredientsLoading);
+  const errorMessage: string | null = useSelector(getIngredientsError);
   const ingredientModal = useSelector(getIngredientModal);
   const placedOrderNumber = useSelector(getOrderNumber);
 

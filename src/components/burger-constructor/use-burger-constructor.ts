@@ -2,16 +2,14 @@ import { nanoid } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { placeOrder } from '@services/order/actions.ts';
-import { getOrderNumber } from '@services/order/selectors.ts';
+import { getOrderNumber } from '@services/order/reducer.ts';
 import {
   addSelectedIngredient,
+  getSelectedIngredients,
+  getTotalPrice,
   moveSelectedIngredient,
   removeSelectedIngredient,
 } from '@services/selected-ingredients/reducer.ts';
-import {
-  getSelectedIngredients,
-  getTotalPrice,
-} from '@services/selected-ingredients/selectors.ts';
 
 import type { AppDispatch } from '@services/store.ts';
 import type { Ingredient, Order } from '@utils';

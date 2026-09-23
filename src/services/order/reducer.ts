@@ -27,4 +27,10 @@ export const orderSlice = createSlice({
       state.number = action.payload.number;
     });
   },
+  selectors: {
+    getOrderName: (state) => state.name,
+    getOrderNumber: (state) => state.number,
+  },
 });
+
+export const { getOrderName, getOrderNumber } = orderSlice.selectors;

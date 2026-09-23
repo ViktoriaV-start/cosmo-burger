@@ -12,6 +12,10 @@ export const ingredientModalSlice = createSlice({
     setIngredientModal: (_state, action: PayloadAction<Ingredient>) => action.payload,
     clearIngredientModal: () => null,
   },
+  selectors: {
+    getIngredientModal: (state) => state,
+  },
 });
 
 export const { setIngredientModal, clearIngredientModal } = ingredientModalSlice.actions;
+export const { getIngredientModal } = ingredientModalSlice.selectors;

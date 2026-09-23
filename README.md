@@ -1,4 +1,8 @@
-# Стартер на TypeScript для проекта Stellar Burger
+# Проект Stellar Burger
+
+## Запуск
+`npm install`
+`npm run dev`
 
 ## Процедура создания коммита с проверками
 
