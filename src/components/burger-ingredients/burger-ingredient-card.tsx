@@ -2,11 +2,10 @@ import { Counter, CurrencyIcon } from '@krgaa/react-developer-burger-ui-componen
 import { INGREDIENT_DRAG_TYPE } from '@utils';
 import classnames from 'classnames';
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
 
+import { useAppSelector } from '@hooks/redux.ts';
 import { getIngredientCounts } from '@services/selected-ingredients/reducer.ts';
 
-import type { RootState } from '@services/store.ts';
 import type { Ingredient } from '@utils';
 
 import styles from './burger-ingredients.module.css';
@@ -22,7 +21,7 @@ export const BurgerIngredientCard = ({
 }: BurgerIngredientCardProps) => {
   const { _id, name, image_large, price } = ingredient;
 
-  const count = useSelector((state: RootState) => getIngredientCounts(state)[_id] ?? 0);
+  const count = useAppSelector((state) => getIngredientCounts(state)[_id] ?? 0);
 
   const [, dragRef] = useDrag<Ingredient>({
     type: INGREDIENT_DRAG_TYPE,

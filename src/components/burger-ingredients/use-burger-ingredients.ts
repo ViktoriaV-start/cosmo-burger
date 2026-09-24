@@ -1,9 +1,13 @@
 import { type RefObject, useRef, useState } from 'react';
 
-import type { IngredientType } from '@utils';
+import { useAppSelector } from '@hooks/redux.ts';
+import { getIngredients } from '@services/ingredients/reducer.ts';
+
+import type { Ingredient, IngredientType } from '@utils';
 
 export const useBurgerIngredients = () => {
   const [activeTab, setActiveTab] = useState<IngredientType>('bun');
+  const ingredients: Ingredient[] = useAppSelector(getIngredients);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const bunsTitleRef = useRef<HTMLHeadingElement>(null);
@@ -47,6 +51,7 @@ export const useBurgerIngredients = () => {
 
   return {
     activeTab,
+    ingredients,
     containerRef,
     bunsTitleRef,
     saucesTitleRef,

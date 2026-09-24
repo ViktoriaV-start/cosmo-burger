@@ -14,7 +14,6 @@ import styles from './app.module.css';
 
 export const App = () => {
   const {
-    ingredients,
     isLoading,
     errorMessage,
     ingredientModal,
@@ -38,10 +37,7 @@ export const App = () => {
 
         {!isLoading && !errorMessage && (
           <main className={`${styles.main} pl-5 pr-5`}>
-            <BurgerIngredients
-              ingredients={ingredients}
-              onIngredientClick={onIngredientClick}
-            />
+            <BurgerIngredients onIngredientClick={onIngredientClick} />
             <BurgerConstructor />
           </main>
         )}

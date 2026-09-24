@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
+import { useAppDispatch, useAppSelector } from '@hooks/redux.ts';
 import {
   clearIngredientModal,
   getIngredientModal,
@@ -14,7 +14,6 @@ import {
 } from '@services/ingredients/reducer.ts';
 import { getOrderNumber } from '@services/order/reducer.ts';
 
-import type { AppDispatch } from '@services/store.ts';
 import type { Ingredient } from '@utils';
 
 type UseAppReturn = {
@@ -29,12 +28,12 @@ type UseAppReturn = {
 };
 
 export const useApp = (): UseAppReturn => {
-  const dispatch = useDispatch<AppDispatch>();
-  const ingredients: Ingredient[] = useSelector(getIngredients);
-  const isLoading: boolean = useSelector(getIngredientsLoading);
-  const errorMessage: string | null = useSelector(getIngredientsError);
-  const ingredientModal = useSelector(getIngredientModal);
-  const placedOrderNumber = useSelector(getOrderNumber);
+  const dispatch = useAppDispatch();
+  const ingredients: Ingredient[] = useAppSelector(getIngredients);
+  const isLoading: boolean = useAppSelector(getIngredientsLoading);
+  const errorMessage: string | null = useAppSelector(getIngredientsError);
+  const ingredientModal = useAppSelector(getIngredientModal);
+  const placedOrderNumber = useAppSelector(getOrderNumber);
 
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 

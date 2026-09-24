@@ -1,23 +1,21 @@
 import { nanoid } from '@reduxjs/toolkit';
-import { useDispatch, useSelector } from 'react-redux';
 
+import { useAppDispatch, useAppSelector } from '@hooks/redux.ts';
 import { placeOrder } from '@services/order/actions.ts';
-import { getOrderNumber } from '@services/order/reducer.ts';
 import {
   addSelectedIngredient,
+  clearSelectedIngredients,
   getSelectedIngredients,
   getTotalPrice,
   moveSelectedIngredient,
   removeSelectedIngredient,
 } from '@services/selected-ingredients/reducer.ts';
 
-import type { AppDispatch } from '@services/store.ts';
 import type { Ingredient, Order } from '@utils';
 
 type UseBurgerConstructor = {
   order: Order;
   totalPrice: number;
-  isOrderPlaced: boolean;
   onOrderClick: () => void;
   onIngredientDrop: (ingredient: Ingredient) => void;
   onIngredientMove: (dragIndex: number, hoverIndex: number) => void;
@@ -25,12 +23,9 @@ type UseBurgerConstructor = {
 };
 
 export const useBurgerConstructor = (): UseBurgerConstructor => {
-  const dispatch = useDispatch<AppDispatch>();
-  const order = useSelector(getSelectedIngredients);
-  const totalPrice = useSelector(getTotalPrice);
-  const placedOrderNumber = useSelector(getOrderNumber);
-
-  const isOrderPlaced = !!placedOrderNumber;
+  const dispatch = useAppDispatch();
+  const order = useAppSelector(getSelectedIngredients);
+  const totalPrice = useAppSelector(getTotalPrice);
 
   const onIngredientDrop = (ingredient: Ingredient): void => {
     dispatch(addSelectedIngredient({ ...ingredient, id: nanoid() }));
@@ -41,7 +36,14 @@ export const useBurgerConstructor = (): UseBurgerConstructor => {
   };
 
   const onOrderClick = (): void => {
-    void dispatch(placeOrder());
+    void dispatch(placeOrder())
+      .unwrap()
+      .then(() => {
+        dispatch(clearSelectedIngredients());
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const onDeleteClick = (ingredientId: string) => {
@@ -51,7 +53,6 @@ export const useBurgerConstructor = (): UseBurgerConstructor => {
   return {
     order,
     totalPrice,
-    isOrderPlaced,
     onIngredientDrop,
     onIngredientMove,
     onOrderClick,

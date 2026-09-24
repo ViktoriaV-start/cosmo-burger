@@ -10,16 +10,13 @@ import type { Ingredient } from '@utils';
 import styles from './burger-ingredients.module.css';
 
 type BurgerIngredientsProps = {
-  ingredients: Ingredient[];
   onIngredientClick: (ingredient: Ingredient) => void;
 };
 
-export const BurgerIngredients = ({
-  ingredients,
-  onIngredientClick,
-}: BurgerIngredientsProps) => {
+export const BurgerIngredients = ({ onIngredientClick }: BurgerIngredientsProps) => {
   const {
     activeTab,
+    ingredients,
     containerRef,
     bunsTitleRef,
     saucesTitleRef,
