@@ -6,34 +6,40 @@ import { ProfilePage } from '@/pages/profile-page';
 import { RegisterPage } from '@/pages/register-page';
 import { ResetPasswordPage } from '@/pages/reset-password-page';
 
+import { AppLayout } from '@components/app-layout';
+
 export const routes = [
   {
-    path: '/',
-    element: <HomePage />,
+    element: <AppLayout />,
+    children: [
+      {
+        path: '/',
+        element: <HomePage />,
+      },
+      {
+        path: '/login',
+        element: <LoginPage />,
+      },
+      {
+        path: '/register',
+        element: <RegisterPage />,
+      },
+      {
+        path: '/forgot-password',
+        element: <ForgotPasswordPage />,
+      },
+      {
+        path: '/reset-password',
+        element: <ResetPasswordPage />,
+      },
+      {
+        path: '/profile',
+        element: <ProfilePage />,
+      },
+      {
+        path: '/404',
+        element: <NotFoundPage />,
+      },
+    ],
   },
-  {
-    path: '/login',
-    element: <LoginPage />,
-  },
-  {
-    path: '/register',
-    element: <RegisterPage />,
-  },
-  {
-    path: '/forgot-password',
-    element: <ForgotPasswordPage />,
-  },
-  {
-    path: '/reset-password',
-    element: <ResetPasswordPage />,
-  },
-  {
-    path: '/profile',
-    element: <ProfilePage />,
-  },
-  {
-    path: '/404',
-    element: <NotFoundPage />,
-  },
-  { path: '*', element: <NotFoundPage /> },
 ];
