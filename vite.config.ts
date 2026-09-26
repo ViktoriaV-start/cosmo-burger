@@ -17,7 +17,9 @@ export default defineConfig({
       enabledMode: ['development'],
       esmExport: true,
     }),
-    tsconfigPaths(),
+    tsconfigPaths({
+      projects: ['./tsconfig.app.json'],
+    }),
   ],
   base: '',
   test: {

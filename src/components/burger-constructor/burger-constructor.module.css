@@ -25,6 +25,37 @@
   flex-shrink: 0;
 }
 
+.dragging {
+  opacity: 0;
+}
+
+.drag_layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.dropSlot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 64px;
+  padding: 8px 24px;
+  color: var(--text-primary-color, #f2f2f3);
+  background-color: #2f2f37;
+  border-radius: 96px;
+}
+
+.dropSlot:hover {
+  background: linear-gradient(63.18deg, #801ab3, #4c4cff);
+  backdrop-filter: blur(10px) brightness(1.15);
+  backdrop-filter: blur(10px) brightness(1.15);
+}
+
 .scroll_item {
   flex-shrink: 1;
   min-height: 0;

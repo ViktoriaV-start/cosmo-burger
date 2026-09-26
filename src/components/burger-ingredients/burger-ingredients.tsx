@@ -1,49 +1,37 @@
-import { Counter, CurrencyIcon, Tab } from '@krgaa/react-developer-burger-ui-components';
+import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import classnames from 'classnames';
 import { useMemo } from 'react';
 
-import type { Ingredient } from '@utils/types';
+import { BurgerIngredientCard } from './burger-ingredient-card';
+import { useBurgerIngredients } from './use-burger-ingredients';
+
+import type { Ingredient } from '@utils';
 
 import styles from './burger-ingredients.module.css';
 
 type BurgerIngredientsProps = {
-  ingredients: Ingredient[];
   onIngredientClick: (ingredient: Ingredient) => void;
 };
 
-export const BurgerIngredients = ({
-  ingredients,
-  onIngredientClick,
-}: BurgerIngredientsProps) => {
-  const createPackElement = (ingredients: Ingredient[]) => {
-    const packElement = ingredients.map((ingredient) => {
-      const { _id, name, image_large, price } = ingredient;
+export const BurgerIngredients = ({ onIngredientClick }: BurgerIngredientsProps) => {
+  const {
+    activeTab,
+    ingredients,
+    containerRef,
+    bunsTitleRef,
+    saucesTitleRef,
+    mainsTitleRef,
+    handleScroll,
+  } = useBurgerIngredients();
 
-      return (
-        <li
-          key={_id}
-          className={styles.burger_ingredient}
-          onClick={() => onIngredientClick(ingredient)}
-        >
-          <img
-            className={classnames(styles.ingredient_image, 'pl-4 pr-4')}
-            src={image_large}
-            alt={name}
-          />
-          <p
-            className={`${styles.ingredient_price} text text_type_digits-default mt-1 mb-1`}
-          >
-            {price}
-            <CurrencyIcon type="primary" />
-          </p>
-          <p className="text text_type_main-default mt-2">{name}</p>
-          <Counter count={1} size="default" extraClass={styles.ingredient_counter} />
-        </li>
-      );
-    });
-
-    return packElement;
-  };
+  const createPackElement = (ingredients: Ingredient[]) =>
+    ingredients.map((ingredient) => (
+      <BurgerIngredientCard
+        key={ingredient._id}
+        ingredient={ingredient}
+        onClick={onIngredientClick}
+      />
+    ));
 
   const { buns, sauces, mains } = useMemo(
     () => ({
@@ -64,7 +52,7 @@ export const BurgerIngredients = ({
         <ul className={styles.menu}>
           <Tab
             value="bun"
-            active={true}
+            active={activeTab === 'bun'}
             onClick={() => {
               /* TODO */
             }}
@@ -73,7 +61,7 @@ export const BurgerIngredients = ({
           </Tab>
           <Tab
             value="main"
-            active={false}
+            active={activeTab === 'main'}
             onClick={() => {
               /* TODO */
             }}
@@ -82,7 +70,7 @@ export const BurgerIngredients = ({
           </Tab>
           <Tab
             value="sauce"
-            active={false}
+            active={activeTab === 'sauce'}
             onClick={() => {
               /* TODO */
             }}
@@ -91,23 +79,33 @@ export const BurgerIngredients = ({
           </Tab>
         </ul>
       </nav>
-      <article className={classnames(styles.ingredients_scroll, 'custom-scroll')}>
+      <article
+        ref={containerRef}
+        className={classnames(styles.ingredients_scroll, 'custom-scroll')}
+        onScroll={handleScroll}
+      >
         <div className="mb-10">
-          <h2 className="text text_type_main-medium">Булки</h2>
+          <h2 ref={bunsTitleRef} className="text text_type_main-medium">
+            Булки
+          </h2>
           <ul className={classnames(styles.ingredients_pack, 'ml-4 mr-4 pt-6')}>
             {bunsIngredients}
           </ul>
         </div>
 
         <div className="mb-10">
-          <h2 className="text text_type_main-medium">Соусы</h2>
+          <h2 ref={saucesTitleRef} className="text text_type_main-medium">
+            Соусы
+          </h2>
           <ul className={classnames(styles.ingredients_pack, 'ml-4 pt-6')}>
             {saucesIngredients}
           </ul>
         </div>
 
         <div className="mb-10">
-          <h2 className="text text_type_main-medium">Начинки</h2>
+          <h2 ref={mainsTitleRef} className="text text_type_main-medium">
+            Начинки
+          </h2>
           <ul className={classnames(styles.ingredients_pack, 'ml-4 pt-6')}>
             {mainsIngredients}
           </ul>

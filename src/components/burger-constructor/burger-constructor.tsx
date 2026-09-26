@@ -2,52 +2,59 @@ import {
   Button,
   ConstructorElement,
   CurrencyIcon,
-  DragIcon,
 } from '@krgaa/react-developer-burger-ui-components';
+import { INGREDIENT_DRAG_TYPE } from '@utils';
 import classnames from 'classnames';
 import { useMemo } from 'react';
+import { useDrop } from 'react-dnd';
 
-import type { Order } from '@utils/types';
+import { BurgerConstructorDragLayer } from './burger-constructor-drag-layer';
+import { BurgerConstructorIngredient } from './burger-constructor-ingredient';
+import { useBurgerConstructor } from './use-burger-constructor';
+
+import type { Ingredient } from '@utils';
 
 import styles from './burger-constructor.module.css';
 
-type BurgerConstructorProps = {
-  order: Order | null;
-  onOrderClick: () => void;
-};
+export const BurgerConstructor = () => {
+  const {
+    order,
+    totalPrice,
+    onIngredientDrop,
+    onIngredientMove,
+    onOrderClick,
+    onDeleteClick,
+  } = useBurgerConstructor();
 
-export const BurgerConstructor = ({ order, onOrderClick }: BurgerConstructorProps) => {
-  const totalPrice = useMemo(() => {
-    if (!order) {
-      return 0;
-    }
+  const [, dropRef] = useDrop<Ingredient>({
+    accept: INGREDIENT_DRAG_TYPE,
+    drop: (ingredient) => onIngredientDrop(ingredient),
+  });
 
-    return (
-      order.bun.price * 2 + order.fillings.reduce((sum, { price }) => sum + price, 0)
-    );
-  }, [order]);
+  const orderIngredients = useMemo(
+    () =>
+      order.ingredients.map((ingredient, index) => (
+        <BurgerConstructorIngredient
+          key={ingredient.id ?? ingredient._id}
+          ingredient={ingredient}
+          index={index}
+          onMove={onIngredientMove}
+          onDeleteClick={onDeleteClick}
+        />
+      )),
+    [order]
+  );
 
-  const orderIngredients = useMemo(() => {
-    if (!order) {
-      return [];
-    }
-
-    return order.fillings.map(({ _id, name, price, image_mobile }) => (
-      <li key={`order-${_id}`} className={styles.order_ingredient}>
-        <DragIcon type="primary" />
-        <ConstructorElement price={price} text={name} thumbnail={image_mobile} />
-      </li>
-    ));
-  }, [order]);
-
-  if (!order) {
-    return null;
-  }
-
-  const { bun } = order;
+  const { bun, ingredients } = order;
 
   return (
-    <section className={classnames(styles.burger_constructor, 'mt-25', 'pl-10')}>
+    <section
+      ref={(node) => {
+        dropRef(node);
+      }}
+      className={classnames(styles.burger_constructor, 'mt-25', 'pl-10')}
+    >
+      <BurgerConstructorDragLayer />
       <ul className={styles.order_list}>
         <li
           className={classnames(
@@ -56,18 +63,32 @@ export const BurgerConstructor = ({ order, onOrderClick }: BurgerConstructorProp
             'ml-8'
           )}
         >
-          <ConstructorElement
-            isLocked
-            price={bun.price}
-            text={`${bun.name} (верх)`}
-            thumbnail={bun.image_mobile}
-            type="top"
-          />
+          {bun ? (
+            <ConstructorElement
+              isLocked
+              price={bun.price}
+              text={`${bun.name} (верх)`}
+              thumbnail={bun.image_mobile}
+              type="top"
+            />
+          ) : (
+            <div className={classnames(styles.dropSlot, 'text text_type_main-default')}>
+              Выберите булки
+            </div>
+          )}
         </li>
 
         <li className={styles.scroll_item}>
           <div className={classnames(styles.scroll_area, 'custom-scroll')}>
-            <ul className={styles.fillings_list}>{orderIngredients}</ul>
+            {ingredients.length > 0 ? (
+              <ul className={styles.fillings_list}>{orderIngredients}</ul>
+            ) : (
+              <div
+                className={classnames(styles.dropSlot, 'text text_type_main-default')}
+              >
+                Выберите начинку
+              </div>
+            )}
           </div>
         </li>
 
@@ -78,13 +99,19 @@ export const BurgerConstructor = ({ order, onOrderClick }: BurgerConstructorProp
             'ml-8'
           )}
         >
-          <ConstructorElement
-            isLocked
-            price={bun.price}
-            text={`${bun.name} (низ)`}
-            thumbnail={bun.image_mobile}
-            type="bottom"
-          />
+          {bun ? (
+            <ConstructorElement
+              isLocked
+              price={bun.price}
+              text={`${bun.name} (низ)`}
+              thumbnail={bun.image_mobile}
+              type="bottom"
+            />
+          ) : (
+            <div className={classnames(styles.dropSlot, 'text text_type_main-default')}>
+              Выберите булки
+            </div>
+          )}
         </li>
       </ul>
 

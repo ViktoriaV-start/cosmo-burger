@@ -1,4 +1,5 @@
 export type Ingredient = {
+  id?: string;
   _id: string;
   name: string;
   type: string;
@@ -14,6 +15,8 @@ export type Ingredient = {
 };
 
 export type Order = {
-  bun: Ingredient;
-  fillings: Ingredient[];
+  bun: Ingredient | null;
+  ingredients: Ingredient[] | [];
 };
+
+export type IngredientType = 'bun' | 'sauce' | 'main';
