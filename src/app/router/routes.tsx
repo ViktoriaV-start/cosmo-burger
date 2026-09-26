@@ -40,6 +40,10 @@ export const routes = [
         path: '/404',
         element: <NotFoundPage />,
       },
+      {
+        path: '*',
+        element: <NotFoundPage />,
+      },
     ],
   },
 ];

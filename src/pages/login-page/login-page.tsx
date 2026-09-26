@@ -14,7 +14,7 @@ export const LoginPage = () => {
 
   return (
     <main className={s.login_container}>
-      <form className={s.form} onSubmit={onSubmit}>
+      <form className={s.login_form} onSubmit={onSubmit}>
         <h1 className="text text_type_main-medium">Вход</h1>
         <EmailInput
           value={email}
@@ -34,13 +34,13 @@ export const LoginPage = () => {
         </Button>
         <p className="text text_type_main-default text_color_inactive">
           Вы — новый пользователь?{' '}
-          <Link to="/register" className={s.link}>
+          <Link to="/register" className={s.login_link}>
             Зарегистрироваться
           </Link>
         </p>
         <p className="text text_type_main-default text_color_inactive mt-4">
           Забыли пароль?{' '}
-          <Link to="/forgot-password" className={s.link}>
+          <Link to="/forgot-password" className={s.login_link}>
             Восстановить пароль
           </Link>
         </p>

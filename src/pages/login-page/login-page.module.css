@@ -5,14 +5,14 @@
   align-items: center;
 }
 
-.form {
+.login_form {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 480px;
 }
 
-.link {
+.login_link {
   color: var(--colors-interface-accent, #4c4cff);
   text-decoration: none;
 }
