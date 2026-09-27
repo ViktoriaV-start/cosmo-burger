@@ -20,3 +20,19 @@ export type Order = {
 };
 
 export type IngredientType = 'bun' | 'sauce' | 'main';
+
+export type User = {
+  email: string;
+  password: string;
+  name: string;
+};
+
+export type RegisterResponse = {
+  success: boolean;
+  user: {
+    email: string;
+    name: string;
+  };
+  accessToken: string;
+  refreshToken: string;
+};

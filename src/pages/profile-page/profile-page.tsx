@@ -11,6 +11,10 @@ export const ProfilePage = () => {
   const { onLogout } = useProfilePage();
   const isOrdersPage = useMatch('/profile/orders');
 
+  // email: 'lan@mail.ru',
+  //   password: '1234567A',
+  //   name: 'Lan',
+
   return (
     <main className={s.profile_container}>
       <div className={s.profile_menu}>

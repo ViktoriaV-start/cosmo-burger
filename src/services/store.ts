@@ -1,5 +1,7 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit';
 
+import { userSlice } from '@services/user/reducer.ts';
+
 import { ingredientModalSlice } from './ingredient-modal/reducer.ts';
 import { ingredientsSlice } from './ingredients/reducer.ts';
 import { orderSlice } from './order/reducer.ts';
@@ -9,7 +11,8 @@ const rootReducer = combineSlices(
   ingredientsSlice,
   orderSlice,
   ingredientModalSlice,
-  selectedIngredientsSlice
+  selectedIngredientsSlice,
+  userSlice
 );
 
 export const store = configureStore({

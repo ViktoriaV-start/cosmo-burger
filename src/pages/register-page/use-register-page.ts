@@ -1,6 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import type { ChangeEvent, FormEvent } from 'react';
+import { useAppDispatch } from '@hooks/redux.ts';
+import { fetchRegisterUser } from '@services/user/actions.ts';
+
+import type { ChangeEvent, SubmitEvent } from 'react';
 
 type UseRegisterPageReturn = {
   name: string;
@@ -9,10 +13,12 @@ type UseRegisterPageReturn = {
   onNameChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onPasswordChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  onSubmit: (e: SubmitEvent<HTMLFormElement>) => void;
 };
 
 export const useRegisterPage = (): UseRegisterPageReturn => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,9 +35,12 @@ export const useRegisterPage = (): UseRegisterPageReturn => {
     setPassword(e.target.value);
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  const onSubmit = (e: SubmitEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    // TODO: регистрация через API
+    dispatch(fetchRegisterUser({ name, email, password }))
+      .unwrap()
+      .then(() => navigate('/'))
+      .catch((error) => console.log(error));
   };
 
   return {
