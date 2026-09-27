@@ -27,12 +27,18 @@ export type User = {
   name: string;
 };
 
-export type RegisterResponse = {
+export type AuthResponse = {
   success: boolean;
   user: {
     email: string;
     name: string;
   };
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type RefreshTokenResponse = {
+  success: boolean;
   accessToken: string;
   refreshToken: string;
 };

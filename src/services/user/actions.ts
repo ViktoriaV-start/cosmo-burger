@@ -2,15 +2,29 @@ import { authApi } from '@/api/auth-api.ts';
 import { getHttpErrorMessage } from '@/api/http-error.ts';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import type { RegisterResponse, User } from '@utils';
+import type { AuthResponse, User } from '@utils';
 
 export const fetchRegisterUser = createAsyncThunk<
-  RegisterResponse,
+  AuthResponse,
   User,
   { rejectValue: string }
 >('user/registerUser', async (userData, { rejectWithValue, signal }) => {
   try {
+    // Токены при успешном ответе сохраняет сам authApi.register
     return await authApi.register(userData, signal);
+  } catch (error) {
+    return rejectWithValue(getHttpErrorMessage(error) ?? 'Регистрация не выполнена');
+  }
+});
+
+export const fetchLoginUser = createAsyncThunk<
+  AuthResponse,
+  Omit<User, 'name'>,
+  { rejectValue: string }
+>('user/loginUser', async (userData, { rejectWithValue, signal }) => {
+  try {
+    // Токены при успешном ответе сохраняет сам authApi.login
+    return await authApi.login(userData, signal);
   } catch (error) {
     return rejectWithValue(getHttpErrorMessage(error) ?? 'Регистрация не выполнена');
   }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch } from '@hooks/redux.ts';
 import { fetchRegisterUser } from '@services/user/actions.ts';
@@ -17,7 +17,7 @@ type UseRegisterPageReturn = {
 };
 
 export const useRegisterPage = (): UseRegisterPageReturn => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -39,7 +39,7 @@ export const useRegisterPage = (): UseRegisterPageReturn => {
     e.preventDefault();
     dispatch(fetchRegisterUser({ name, email, password }))
       .unwrap()
-      .then(() => navigate('/'))
+      // .then(() => navigate('/'))
       .catch((error) => console.log(error));
   };
 

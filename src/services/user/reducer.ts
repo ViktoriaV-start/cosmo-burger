@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchRegisterUser } from '@services/user/actions.ts';
+import { fetchLoginUser, fetchRegisterUser } from '@services/user/actions.ts';
 
 type UserState = {
   email: string | null;
@@ -45,6 +45,26 @@ export const userSlice = createSlice({
 
         state.isLoading = false;
         state.error = action.payload ?? 'Регистрация не произведена';
+      })
+      .addCase(fetchLoginUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchLoginUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.email = action.payload.user.email;
+        state.name = action.payload.user.name;
+        state.accessToken = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
+      })
+      .addCase(fetchLoginUser.rejected, (state, action) => {
+        if (action.meta.aborted) {
+          return;
+        }
+
+        state.isLoading = false;
+        state.error = action.payload ?? 'Ошибка при входе';
       });
   },
   selectors: {

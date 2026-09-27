@@ -1,5 +1,6 @@
 import { type Ingredient, PLACE_ORDER_API_URL, RESOURCE_API_URL } from '@utils';
 
+import { authApi } from './auth-api';
 import { HttpTransport } from './http-transport';
 
 const ingredientsApiInstance = new HttpTransport();
@@ -52,10 +53,13 @@ class IngredientsApi {
   }
 
   async placeOrder(data: OrderData, signal?: AbortSignal): Promise<OrderResponse> {
-    const response = await ingredientsApiInstance.post(PLACE_ORDER_API_URL, {
-      data,
-      signal,
-    });
+    const response = await authApi.requestWithRefresh((accessToken) =>
+      ingredientsApiInstance.post(PLACE_ORDER_API_URL, {
+        data,
+        signal,
+        headers: accessToken ? { authorization: accessToken } : undefined,
+      })
+    );
 
     if (!isOrderResponse(response)) {
       throw new Error('Сервер вернул некорректный ответ на запрос ингредиентов');
