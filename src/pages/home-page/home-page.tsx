@@ -1,10 +1,10 @@
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Outlet } from 'react-router-dom';
 
 import { BurgerConstructor } from '@components/burger-constructor';
 import { BurgerIngredients } from '@components/burger-ingredients';
-import { IngredientDetails } from '@components/ingredient-details';
 import { Modal } from '@components/modal';
 import { OrderDetails } from '@components/order-details';
 
@@ -16,12 +16,16 @@ export const HomePage = () => {
   const {
     isLoading,
     errorMessage,
-    ingredientModal,
+    isIngredientPage,
     onIngredientClick,
-    onCloseIngredientModal,
     orderNumber,
     onCloseOrderModal,
   } = useApp();
+
+  // Детальная страница ингредиента по прямой ссылке — без конструктора
+  if (isIngredientPage) {
+    return <Outlet />;
+  }
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -40,11 +44,7 @@ export const HomePage = () => {
         </main>
       )}
 
-      {ingredientModal && (
-        <Modal header="Детали ингредиента" onClose={onCloseIngredientModal}>
-          <IngredientDetails ingredient={ingredientModal} />
-        </Modal>
-      )}
+      <Outlet />
 
       {orderNumber !== null && (
         <Modal onClose={onCloseOrderModal}>

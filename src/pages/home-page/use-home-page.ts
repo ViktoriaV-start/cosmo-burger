@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useLocation, useMatch, useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '@hooks/redux.ts';
-import {
-  clearIngredientModal,
-  getIngredientModal,
-  setIngredientModal,
-} from '@services/ingredient-modal/reducer.ts';
 import { fetchIngredients } from '@services/ingredients/actions.ts';
 import {
   getIngredients,
@@ -14,25 +10,28 @@ import {
 } from '@services/ingredients/reducer.ts';
 import { getOrderNumber } from '@services/order/reducer.ts';
 
+import type { IngredientLocationState } from '@/pages/ingredient-page/use-ingredient-page';
 import type { Ingredient } from '@utils';
 
 type UseAppReturn = {
   ingredients: Ingredient[];
   isLoading: boolean;
   errorMessage: string | null;
-  ingredientModal: Ingredient | null;
+  isIngredientPage: boolean;
   onIngredientClick: (ingredient: Ingredient) => void;
-  onCloseIngredientModal: () => void;
   orderNumber: number | null;
   onCloseOrderModal: () => void;
 };
 
 export const useApp = (): UseAppReturn => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const ingredientMatch = useMatch('/ingredients/:id');
+  const isModal = Boolean((location.state as IngredientLocationState)?.isModal);
   const ingredients: Ingredient[] = useAppSelector(getIngredients);
   const isLoading: boolean = useAppSelector(getIngredientsLoading);
   const errorMessage: string | null = useAppSelector(getIngredientsError);
-  const ingredientModal = useAppSelector(getIngredientModal);
   const placedOrderNumber = useAppSelector(getOrderNumber);
 
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
@@ -52,11 +51,8 @@ export const useApp = (): UseAppReturn => {
   }, [placedOrderNumber]);
 
   const onIngredientClick = (ingredient: Ingredient): void => {
-    dispatch(setIngredientModal(ingredient));
-  };
-
-  const onCloseIngredientModal = (): void => {
-    dispatch(clearIngredientModal());
+    const state: IngredientLocationState = { isModal: true };
+    void navigate(`/ingredients/${ingredient._id}`, { state });
   };
 
   const onCloseOrderModal = (): void => {
@@ -67,9 +63,8 @@ export const useApp = (): UseAppReturn => {
     ingredients,
     isLoading,
     errorMessage,
-    ingredientModal,
+    isIngredientPage: ingredientMatch !== null && !isModal,
     onIngredientClick,
-    onCloseIngredientModal,
     orderNumber: isOrderModalOpen ? placedOrderNumber : null,
     onCloseOrderModal,
   };

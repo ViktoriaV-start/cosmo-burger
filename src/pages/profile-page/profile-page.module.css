@@ -40,9 +40,3 @@
 .profile_description {
   opacity: 0.4;
 }
-
-.form {
-  display: flex;
-  flex-direction: column;
-  width: 480px;
-}
