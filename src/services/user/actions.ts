@@ -29,3 +29,16 @@ export const fetchLoginUser = createAsyncThunk<
     return rejectWithValue(getHttpErrorMessage(error) ?? 'Регистрация не выполнена');
   }
 });
+
+export const fetchLogoutUser = createAsyncThunk<void, void, { rejectValue: string }>(
+  'user/logoutUser',
+  async (_, { rejectWithValue, signal }) => {
+    try {
+      await authApi.logout(signal);
+    } catch (error) {
+      return rejectWithValue(
+        getHttpErrorMessage(error) ?? 'Не удалось выйти из системы'
+      );
+    }
+  }
+);

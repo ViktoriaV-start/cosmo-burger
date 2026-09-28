@@ -4,12 +4,14 @@ import {
   ACCESS_TOKEN_KEY,
   getLocalStorageItem,
   LOGIN_API_URL,
+  LOGOUT_API_URL,
   REFRESH_TOKEN_KEY,
   REGISTER_API_URL,
   removeLocalStorageItem,
   setLocalStorageItem,
   TOKEN_API_URL,
   type AuthResponse,
+  type LogoutResponse,
   type RefreshTokenResponse,
   type User,
 } from '@utils';
@@ -25,6 +27,12 @@ const isRefreshTokenResponse = (value: unknown): value is RefreshTokenResponse =
     !!value &&
     typeof value === 'object' &&
     (value as RefreshTokenResponse).success === true
+  );
+};
+
+const isLogoutResponse = (value: unknown): value is LogoutResponse => {
+  return (
+    !!value && typeof value === 'object' && (value as LogoutResponse).success === true
   );
 };
 
@@ -103,6 +111,26 @@ export class AuthApi {
       removeLocalStorageItem(ACCESS_TOKEN_KEY);
       removeLocalStorageItem(REFRESH_TOKEN_KEY);
       throw error;
+    }
+  }
+
+  async logout(signal?: AbortSignal): Promise<LogoutResponse> {
+    const refreshToken = getLocalStorageItem<string>(REFRESH_TOKEN_KEY);
+
+    try {
+      const response = await authApiInstance.post(LOGOUT_API_URL, {
+        data: { token: refreshToken },
+        signal,
+      });
+
+      if (!isLogoutResponse(response)) {
+        throw new Error('Сервер вернул некорректный ответ при выходе из системы');
+      }
+
+      return response;
+    } finally {
+      removeLocalStorageItem(ACCESS_TOKEN_KEY);
+      removeLocalStorageItem(REFRESH_TOKEN_KEY);
     }
   }
 

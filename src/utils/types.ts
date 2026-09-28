@@ -42,3 +42,8 @@ export type RefreshTokenResponse = {
   accessToken: string;
   refreshToken: string;
 };
+
+export type LogoutResponse = {
+  success: boolean;
+  message: string;
+};

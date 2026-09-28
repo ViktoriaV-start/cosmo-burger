@@ -1,10 +1,15 @@
+import { useAppDispatch } from '@hooks/redux.ts';
+import { fetchLogoutUser } from '@services/user/actions.ts';
+
 type UseProfilePageReturn = {
   onLogout: () => void;
 };
 
 export const useProfilePage = (): UseProfilePageReturn => {
+  const dispatch = useAppDispatch();
+
   const onLogout = (): void => {
-    // TODO: выход через API
+    void dispatch(fetchLogoutUser());
   };
 
   return {

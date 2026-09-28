@@ -1,6 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchLoginUser, fetchRegisterUser } from '@services/user/actions.ts';
+import {
+  fetchLoginUser,
+  fetchLogoutUser,
+  fetchRegisterUser,
+} from '@services/user/actions.ts';
 
 type UserState = {
   email: string | null;
@@ -65,6 +69,31 @@ export const userSlice = createSlice({
 
         state.isLoading = false;
         state.error = action.payload ?? 'Ошибка при входе';
+      })
+      .addCase(fetchLogoutUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchLogoutUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.error = null;
+        state.email = null;
+        state.name = null;
+        state.accessToken = null;
+        state.refreshToken = null;
+      })
+      .addCase(fetchLogoutUser.rejected, (state, action) => {
+        if (action.meta.aborted) {
+          return;
+        }
+
+        // authApi.logout чистит токены в localStorage в любом случае — синхронизируем стор
+        state.isLoading = false;
+        state.error = action.payload ?? 'Не удалось выйти из системы';
+        state.email = null;
+        state.name = null;
+        state.accessToken = null;
+        state.refreshToken = null;
       });
   },
   selectors: {
