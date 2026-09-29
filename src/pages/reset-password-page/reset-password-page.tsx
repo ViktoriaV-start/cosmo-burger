@@ -3,15 +3,19 @@ import {
   Input,
   PasswordInput,
 } from '@krgaa/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 import { useResetPasswordPage } from './use-reset-password-page';
 
 import s from './reset-password-page.module.css';
 
 export const ResetPasswordPage = () => {
-  const { password, token, onPasswordChange, onTokenChange, onSubmit } =
+  const { password, token, canReset, onPasswordChange, onTokenChange, onSubmit } =
     useResetPasswordPage();
+
+  if (!canReset) {
+    return <Navigate to="/forgot-password" replace />;
+  }
 
   return (
     <main className={s.reset_password_container}>

@@ -10,7 +10,6 @@ export const fetchRegisterUser = createAsyncThunk<
   { rejectValue: string }
 >('user/registerUser', async (userData, { rejectWithValue, signal }) => {
   try {
-    // Токены при успешном ответе сохраняет сам authApi.register
     return await authApi.register(userData, signal);
   } catch (error) {
     return rejectWithValue(getHttpErrorMessage(error) ?? 'Регистрация не выполнена');

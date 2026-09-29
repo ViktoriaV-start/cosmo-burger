@@ -11,9 +11,11 @@ import {
   setLocalStorageItem,
   TOKEN_API_URL,
   type AuthResponse,
-  type LogoutResponse,
+  type AuthRequestResponse,
   type RefreshTokenResponse,
   type User,
+  RECOVERY_PASSWORD_API_URL,
+  RESET_PASSWORD_API_URL,
 } from '@utils';
 
 const isAuthResponse = (value: unknown): value is AuthResponse => {
@@ -30,10 +32,8 @@ const isRefreshTokenResponse = (value: unknown): value is RefreshTokenResponse =
   );
 };
 
-const isLogoutResponse = (value: unknown): value is LogoutResponse => {
-  return (
-    !!value && typeof value === 'object' && (value as LogoutResponse).success === true
-  );
+const isAuthRequestResponse = (value: unknown): value is AuthRequestResponse => {
+  return !!value && typeof value === 'object' && (value as AuthRequestResponse).success;
 };
 
 const saveAuthTokens = (response: {
@@ -79,6 +79,38 @@ export class AuthApi {
     return response;
   }
 
+  async recoveryPassword(
+    data: Pick<User, 'email'>,
+    signal?: AbortSignal
+  ): Promise<AuthRequestResponse> {
+    const response = await authApiInstance.post(RECOVERY_PASSWORD_API_URL, {
+      data,
+      signal,
+    });
+
+    if (!isAuthRequestResponse(response)) {
+      throw new Error('Сервер вернул некорректный ответ');
+    }
+
+    return response;
+  }
+
+  async resetPassword(
+    data: { password: string; token: string },
+    signal?: AbortSignal
+  ): Promise<AuthRequestResponse> {
+    const response = await authApiInstance.post(RESET_PASSWORD_API_URL, {
+      data,
+      signal,
+    });
+
+    if (!isAuthRequestResponse(response)) {
+      throw new Error('Сервер вернул некорректный ответ');
+    }
+
+    return response;
+  }
+
   refreshToken(): Promise<RefreshTokenResponse> {
     this.refreshPromise ??= this.performRefresh().finally(() => {
       this.refreshPromise = null;
@@ -114,7 +146,7 @@ export class AuthApi {
     }
   }
 
-  async logout(signal?: AbortSignal): Promise<LogoutResponse> {
+  async logout(signal?: AbortSignal): Promise<AuthRequestResponse> {
     const refreshToken = getLocalStorageItem<string>(REFRESH_TOKEN_KEY);
 
     try {
@@ -123,7 +155,7 @@ export class AuthApi {
         signal,
       });
 
-      if (!isLogoutResponse(response)) {
+      if (!isAuthRequestResponse(response)) {
         throw new Error('Сервер вернул некорректный ответ при выходе из системы');
       }
 

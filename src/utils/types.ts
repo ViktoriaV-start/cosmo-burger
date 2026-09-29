@@ -43,7 +43,7 @@ export type RefreshTokenResponse = {
   refreshToken: string;
 };
 
-export type LogoutResponse = {
+export type AuthRequestResponse = {
   success: boolean;
   message: string;
 };
