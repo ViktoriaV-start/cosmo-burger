@@ -1,55 +1,50 @@
-import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-
 import { useAppDispatch } from '@hooks/redux.ts';
+import {
+  useFormWithValidation,
+  type FormErrors,
+} from '@hooks/use-form-with-validation.ts';
 import { fetchRegisterUser } from '@services/user/actions.ts';
 
 import type { ChangeEvent, SubmitEvent } from 'react';
 
-type UseRegisterPageReturn = {
+type RegisterFormValues = {
   name: string;
   email: string;
   password: string;
-  onNameChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onPasswordChange: (e: ChangeEvent<HTMLInputElement>) => void;
+};
+
+type UseRegisterPageReturn = {
+  values: RegisterFormValues;
+  errors: FormErrors<RegisterFormValues>;
+  isValid: boolean;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: SubmitEvent<HTMLFormElement>) => void;
 };
 
 export const useRegisterPage = (): UseRegisterPageReturn => {
-  // const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
-  const onNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setName(e.target.value);
-  };
-
-  const onEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setEmail(e.target.value);
-  };
-
-  const onPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setPassword(e.target.value);
-  };
+  // Все поля обязательные; после успешной регистрации редирект делает ProtectedRoute
+  const { values, errors, isValid, handleChange } =
+    useFormWithValidation<RegisterFormValues>({ name: '', email: '', password: '' });
 
   const onSubmit = (e: SubmitEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    dispatch(fetchRegisterUser({ name, email, password }))
+
+    if (!isValid) {
+      return;
+    }
+
+    dispatch(fetchRegisterUser(values))
       .unwrap()
-      // .then(() => navigate('/'))
       .catch((error) => console.log(error));
   };
 
   return {
-    name,
-    email,
-    password,
-    onNameChange,
-    onEmailChange,
-    onPasswordChange,
+    values,
+    errors,
+    isValid,
+    onChange: handleChange,
     onSubmit,
   };
 };

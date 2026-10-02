@@ -5,6 +5,7 @@ import {
   fetchLoginUser,
   fetchLogoutUser,
   fetchRegisterUser,
+  fetchUpdateUser,
 } from '@services/user/actions.ts';
 
 import type { User } from '@utils';
@@ -92,6 +93,23 @@ export const userSlice = createSlice({
 
         state.isLoading = false;
         state.error = action.payload ?? 'Ошибка при входе';
+      })
+      .addCase(fetchUpdateUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchUpdateUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.email = action.payload.email;
+        state.name = action.payload.name;
+      })
+      .addCase(fetchUpdateUser.rejected, (state, action) => {
+        if (action.meta.aborted) {
+          return;
+        }
+
+        state.isLoading = false;
+        state.error = action.payload ?? 'Не удалось сохранить данные пользователя';
       })
       .addCase(fetchLogoutUser.pending, (state) => {
         state.isLoading = true;

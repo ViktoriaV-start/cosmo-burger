@@ -64,3 +64,20 @@ export const checkUserAuth = createAsyncThunk<UserAuthResponse['user'] | null, v
     }
   }
 );
+
+// Пустая строка в password означает «пароль не меняется»
+export const fetchUpdateUser = createAsyncThunk<
+  UserAuthResponse['user'],
+  User,
+  { rejectValue: string }
+>('user/updateUser', async (userData, { rejectWithValue, signal }) => {
+  try {
+    const response = await authApi.updateUser(userData, signal);
+
+    return response.user;
+  } catch (error) {
+    return rejectWithValue(
+      getHttpErrorMessage(error) ?? 'Не удалось сохранить данные пользователя'
+    );
+  }
+});

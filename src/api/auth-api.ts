@@ -218,6 +218,22 @@ export class AuthApi {
 
     return response;
   }
+
+  async updateUser(data: User, signal?: AbortSignal): Promise<UserAuthResponse> {
+    const response = await this.requestWithRefresh((accessToken) =>
+      authApiInstance.patch(AUTH_USER_API_URL, {
+        data,
+        signal,
+        headers: accessToken ? { authorization: accessToken } : {},
+      })
+    );
+
+    if (!isUserAuthResponse(response)) {
+      throw new Error('Сервер вернул некорректный ответ при обновлении данных');
+    }
+
+    return response;
+  }
 }
 
 export const authApi = new AuthApi();

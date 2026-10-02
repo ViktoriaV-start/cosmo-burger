@@ -1,44 +1,82 @@
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@hooks/redux.ts';
+import {
+  useFormWithValidation,
+  type FormErrors,
+} from '@hooks/use-form-with-validation.ts';
+import { fetchUpdateUser } from '@services/user/actions.ts';
+import { getUser, getUserError, getUserLoading } from '@services/user/reducer.ts';
 
-import { useAppSelector } from '@hooks/redux.ts';
-import { getUser } from '@services/user/reducer.ts';
+import type { ChangeEvent, SubmitEvent } from 'react';
 
-import type { ChangeEvent } from 'react';
-
-type UseProfileFormReturn = {
+type ProfileFormValues = {
   name: string;
   email: string;
   password: string;
-  onNameChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onPasswordChange: (e: ChangeEvent<HTMLInputElement>) => void;
+};
+
+type UseProfileFormReturn = {
+  values: ProfileFormValues;
+  errors: FormErrors<ProfileFormValues>;
+  isValid: boolean;
+  isChanged: boolean;
+  isLoading: boolean;
+  errorMessage: string | null;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onCancel: () => void;
+  onSubmit: (e: SubmitEvent<HTMLFormElement>) => void;
 };
 
 export const useProfileForm = (): UseProfileFormReturn => {
+  const dispatch = useAppDispatch();
   const user = useAppSelector(getUser);
+  const isLoading = useAppSelector(getUserLoading);
+  const errorMessage = useAppSelector(getUserError);
 
-  const [name, setName] = useState(user.name ?? '');
-  const [email, setEmail] = useState(user.email ?? '');
-  const [password, setPassword] = useState('');
-
-  const onNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setName(e.target.value);
+  const initialValues: ProfileFormValues = {
+    name: user.name ?? '',
+    email: user.email ?? '',
+    password: '',
   };
 
-  const onEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setEmail(e.target.value);
+  // Пустой пароль допустим: он означает «пароль не меняется»
+  const { values, errors, isValid, handleChange, resetForm } =
+    useFormWithValidation<ProfileFormValues>(initialValues, {
+      optionalFields: ['password'],
+    });
+
+  // Исходные значения берём из стора: после сохранения они обновятся, и кнопки скроются сами
+  const isChanged =
+    values.name !== initialValues.name ||
+    values.email !== initialValues.email ||
+    values.password !== '';
+
+  const onCancel = (): void => {
+    resetForm(initialValues);
   };
 
-  const onPasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setPassword(e.target.value);
+  const onSubmit = (e: SubmitEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+
+    if (!isValid) {
+      return;
+    }
+
+    // Если пароль не редактировали, password === '' — сервер его не меняет
+    dispatch(fetchUpdateUser(values))
+      .unwrap()
+      .then((updatedUser) => resetForm({ ...updatedUser, password: '' }))
+      .catch((error) => console.log(error));
   };
 
   return {
-    name,
-    email,
-    password,
-    onNameChange,
-    onEmailChange,
-    onPasswordChange,
+    values,
+    errors,
+    isValid,
+    isChanged,
+    isLoading,
+    errorMessage,
+    onChange: handleChange,
+    onCancel,
+    onSubmit,
   };
 };
