@@ -11,6 +11,7 @@ import { ResetPasswordPage } from '@/pages/reset-password-page';
 
 import { AppLayout } from '@components/app-layout';
 import { ProfileForm } from '@components/profile-form';
+import { ProtectedRoute } from '@components/protected-route';
 
 export const routes = [
   {
@@ -28,23 +29,23 @@ export const routes = [
       },
       {
         path: '/login',
-        element: <LoginPage />,
+        element: <ProtectedRoute onlyUnAuth component={<LoginPage />} />,
       },
       {
         path: '/register',
-        element: <RegisterPage />,
+        element: <ProtectedRoute onlyUnAuth component={<RegisterPage />} />,
       },
       {
         path: '/forgot-password',
-        element: <ForgotPasswordPage />,
+        element: <ProtectedRoute onlyUnAuth component={<ForgotPasswordPage />} />,
       },
       {
         path: '/reset-password',
-        element: <ResetPasswordPage />,
+        element: <ProtectedRoute onlyUnAuth component={<ResetPasswordPage />} />,
       },
       {
         path: '/profile',
-        element: <ProfilePage />,
+        element: <ProtectedRoute component={<ProfilePage />} />,
         children: [
           {
             index: true,

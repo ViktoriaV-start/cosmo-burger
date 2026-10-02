@@ -1,10 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import {
+  checkUserAuth,
   fetchLoginUser,
   fetchLogoutUser,
   fetchRegisterUser,
 } from '@services/user/actions.ts';
+
+import type { User } from '@utils';
 
 type UserState = {
   email: string | null;
@@ -13,6 +16,7 @@ type UserState = {
   refreshToken: string | null;
   isLoading: boolean;
   error: string | null;
+  isAuthChecked: boolean;
 };
 
 const initialState: UserState = {
@@ -22,14 +26,31 @@ const initialState: UserState = {
   refreshToken: null,
   isLoading: false,
   error: null,
+  isAuthChecked: false,
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, action: PayloadAction<Omit<User, 'password'>>) => {
+      state.email = action.payload.email;
+      state.name = action.payload.name;
+    },
+    setIsAuthChecked: (state, action: PayloadAction<boolean>) => {
+      state.isAuthChecked = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
+      .addCase(checkUserAuth.fulfilled, (state, action) => {
+        state.email = action.payload?.email ?? null;
+        state.name = action.payload?.name ?? null;
+        state.isAuthChecked = true;
+      })
+      .addCase(checkUserAuth.rejected, (state) => {
+        state.isAuthChecked = true;
+      })
       .addCase(fetchRegisterUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -41,6 +62,7 @@ export const userSlice = createSlice({
         state.name = action.payload.user.name;
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
+        state.isAuthChecked = true;
       })
       .addCase(fetchRegisterUser.rejected, (state, action) => {
         if (action.meta.aborted) {
@@ -61,6 +83,7 @@ export const userSlice = createSlice({
         state.name = action.payload.user.name;
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
+        state.isAuthChecked = true;
       })
       .addCase(fetchLoginUser.rejected, (state, action) => {
         if (action.meta.aborted) {
@@ -87,7 +110,6 @@ export const userSlice = createSlice({
           return;
         }
 
-        // authApi.logout чистит токены в localStorage в любом случае — синхронизируем стор
         state.isLoading = false;
         state.error = action.payload ?? 'Не удалось выйти из системы';
         state.email = null;
@@ -97,13 +119,24 @@ export const userSlice = createSlice({
       });
   },
   selectors: {
-    getUser: (state) => ({
-      name: state.name,
-      email: state.email,
-    }),
+    // Мемоизирован: возвращает тот же объект, пока name и email не изменились,
+    // иначе useSelector получал бы новую ссылку на каждый вызов и лишне перерендерил компонент
+    getUser: createSelector(
+      [(state: UserState) => state.name, (state: UserState) => state.email],
+      (name, email) => ({ name, email })
+    ),
     getUserLoading: (state) => state.isLoading,
     getUserError: (state) => state.error,
+    getIsAuthChecked: (state) => state.isAuthChecked,
+    getIsAuthorized: (state) => state.email !== null,
   },
 });
 
-export const { getUser, getUserLoading, getUserError } = userSlice.selectors;
+export const { setUser, setIsAuthChecked } = userSlice.actions;
+export const {
+  getUser,
+  getUserLoading,
+  getUserError,
+  getIsAuthChecked,
+  getIsAuthorized,
+} = userSlice.selectors;

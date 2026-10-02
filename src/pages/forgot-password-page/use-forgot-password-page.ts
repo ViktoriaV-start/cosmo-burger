@@ -3,12 +3,12 @@ import { RESET_PASSWORD_FLAG_KEY, setLocalStorageItem } from '@utils';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, SubmitEvent } from 'react';
 
 type UseForgotPasswordPageReturn = {
   email: string;
   onEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: SubmitEvent) => Promise<void>;
+  onSubmit: (e: SubmitEvent<HTMLFormElement>) => void;
 };
 
 export const useForgotPasswordPage = (): UseForgotPasswordPageReturn => {
@@ -20,19 +20,17 @@ export const useForgotPasswordPage = (): UseForgotPasswordPageReturn => {
     setEmail(e.target.value);
   };
 
-  const onSubmit = async (e: SubmitEvent): Promise<void> => {
+  const onSubmit = (e: SubmitEvent<HTMLFormElement>): void => {
     e.preventDefault();
-
-    try {
-      const response = await authApi.recoveryPassword({ email });
-
-      if (response.success) {
-        setLocalStorageItem(RESET_PASSWORD_FLAG_KEY, true);
-        await navigate('/reset-password');
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    authApi
+      .recoveryPassword({ email })
+      .then((response) => {
+        if (response.success) {
+          setLocalStorageItem(RESET_PASSWORD_FLAG_KEY, true);
+          return navigate('/reset-password');
+        }
+      })
+      .catch((error) => console.log(error));
   };
 
   return { email, onEmailChange, onSubmit };

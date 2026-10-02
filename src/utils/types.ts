@@ -47,3 +47,11 @@ export type AuthRequestResponse = {
   success: boolean;
   message: string;
 };
+
+export type UserAuthResponse = {
+  success: boolean;
+  user: {
+    email: string;
+    name: string;
+  };
+};

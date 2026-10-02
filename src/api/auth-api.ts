@@ -1,4 +1,4 @@
-import { HttpError } from '@/api/http-error.ts';
+import { getHttpErrorMessage, HttpError } from '@/api/http-error.ts';
 import { HttpTransport } from '@/api/http-transport.ts';
 import {
   ACCESS_TOKEN_KEY,
@@ -16,11 +16,19 @@ import {
   type User,
   RECOVERY_PASSWORD_API_URL,
   RESET_PASSWORD_API_URL,
+  AUTH_USER_API_URL,
+  type UserAuthResponse,
 } from '@utils';
 
 const isAuthResponse = (value: unknown): value is AuthResponse => {
   return (
     !!value && typeof value === 'object' && (value as AuthResponse).success === true
+  );
+};
+
+const isUserAuthResponse = (value: unknown): value is UserAuthResponse => {
+  return (
+    !!value && typeof value === 'object' && (value as UserAuthResponse).success === true
   );
 };
 
@@ -34,6 +42,18 @@ const isRefreshTokenResponse = (value: unknown): value is RefreshTokenResponse =
 
 const isAuthRequestResponse = (value: unknown): value is AuthRequestResponse => {
   return !!value && typeof value === 'object' && (value as AuthRequestResponse).success;
+};
+
+// Сервер сообщает о просроченном accessToken не 401, а 403 с message: 'jwt expired'
+const isTokenExpiredError = (error: unknown): boolean => {
+  if (!(error instanceof HttpError)) {
+    return false;
+  }
+
+  return (
+    error.status === 401 ||
+    (error.status === 403 && getHttpErrorMessage(error) === 'jwt expired')
+  );
 };
 
 const saveAuthTokens = (response: {
@@ -174,7 +194,7 @@ export class AuthApi {
     try {
       return await makeRequest(accessToken);
     } catch (error) {
-      if (!(error instanceof HttpError) || error.status !== 401) {
+      if (!isTokenExpiredError(error)) {
         throw error;
       }
 
@@ -182,6 +202,21 @@ export class AuthApi {
 
       return makeRequest(refreshed.accessToken);
     }
+  }
+
+  async getUser(signal?: AbortSignal): Promise<UserAuthResponse> {
+    const response = await this.requestWithRefresh((accessToken) =>
+      authApiInstance.get(AUTH_USER_API_URL, {
+        signal,
+        headers: accessToken ? { authorization: accessToken } : {},
+      })
+    );
+
+    if (!isUserAuthResponse(response)) {
+      throw new Error('Сервер вернул некорректный ответ');
+    }
+
+    return response;
   }
 }
 

@@ -1,5 +1,8 @@
 import { useState } from 'react';
 
+import { useAppSelector } from '@hooks/redux.ts';
+import { getUser } from '@services/user/reducer.ts';
+
 import type { ChangeEvent } from 'react';
 
 type UseProfileFormReturn = {
@@ -12,9 +15,10 @@ type UseProfileFormReturn = {
 };
 
 export const useProfileForm = (): UseProfileFormReturn => {
-  // TODO: брать начальные значения из данных пользователя
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const user = useAppSelector(getUser);
+
+  const [name, setName] = useState(user.name ?? '');
+  const [email, setEmail] = useState(user.email ?? '');
   const [password, setPassword] = useState('');
 
   const onNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
