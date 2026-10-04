@@ -5,6 +5,9 @@ import { HttpTransport } from './http-transport';
 
 const ingredientsApiInstance = new HttpTransport();
 
+// Сервер создаёт заказ ~15 секунд — дефолтного таймаута транспорта (10 с) не хватает
+const PLACE_ORDER_TIMEOUT = 30000;
+
 type IngredientsResponse = {
   success: boolean;
   data: Ingredient[];
@@ -57,6 +60,7 @@ class IngredientsApi {
       ingredientsApiInstance.post(PLACE_ORDER_API_URL, {
         data,
         signal,
+        timeout: PLACE_ORDER_TIMEOUT,
         headers: accessToken ? { authorization: accessToken } : undefined,
       })
     );

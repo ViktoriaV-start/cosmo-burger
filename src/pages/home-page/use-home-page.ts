@@ -8,7 +8,8 @@ import {
   getIngredientsError,
   getIngredientsLoading,
 } from '@services/ingredients/reducer.ts';
-import { getOrderNumber } from '@services/order/reducer.ts';
+import { getOrderLoading, getOrderNumber } from '@services/order/reducer.ts';
+import { getUserLoading } from '@services/user/reducer.ts';
 
 import type { IngredientLocationState } from '@/pages/ingredient-page/use-ingredient-page';
 import type { Ingredient } from '@utils';
@@ -30,7 +31,12 @@ export const useApp = (): UseAppReturn => {
   const ingredientMatch = useMatch('/ingredients/:id');
   const isModal = Boolean((location.state as IngredientLocationState)?.isModal);
   const ingredients: Ingredient[] = useAppSelector(getIngredients);
-  const isLoading: boolean = useAppSelector(getIngredientsLoading);
+
+  const isUserLoading = useAppSelector(getUserLoading);
+  const isOrderLoading = useAppSelector(getOrderLoading);
+  const isIngredientsLoading: boolean = useAppSelector(getIngredientsLoading);
+  const isLoading = isIngredientsLoading || isOrderLoading || isUserLoading;
+
   const errorMessage: string | null = useAppSelector(getIngredientsError);
   const placedOrderNumber = useAppSelector(getOrderNumber);
 

@@ -18,6 +18,7 @@ import {
   RESET_PASSWORD_API_URL,
   AUTH_USER_API_URL,
   type UserAuthResponse,
+  ErrorType,
 } from '@utils';
 
 const isAuthResponse = (value: unknown): value is AuthResponse => {
@@ -190,6 +191,10 @@ export class AuthApi {
     makeRequest: (accessToken: string | null) => Promise<T>
   ): Promise<T> {
     const accessToken = getLocalStorageItem<string>(ACCESS_TOKEN_KEY);
+
+    if (!accessToken) {
+      throw new HttpError(401, { reason: ErrorType.AccessToken });
+    }
 
     try {
       return await makeRequest(accessToken);
