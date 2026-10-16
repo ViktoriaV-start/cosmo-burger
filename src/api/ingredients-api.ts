@@ -1,8 +1,12 @@
 import { type Ingredient, PLACE_ORDER_API_URL, RESOURCE_API_URL } from '@utils';
 
+import { authApi } from './auth-api';
 import { HttpTransport } from './http-transport';
 
 const ingredientsApiInstance = new HttpTransport();
+
+// Сервер создаёт заказ ~15 секунд — дефолтного таймаута транспорта (10 с) не хватает
+const PLACE_ORDER_TIMEOUT = 30000;
 
 type IngredientsResponse = {
   success: boolean;
@@ -52,10 +56,14 @@ class IngredientsApi {
   }
 
   async placeOrder(data: OrderData, signal?: AbortSignal): Promise<OrderResponse> {
-    const response = await ingredientsApiInstance.post(PLACE_ORDER_API_URL, {
-      data,
-      signal,
-    });
+    const response = await authApi.requestWithRefresh((accessToken) =>
+      ingredientsApiInstance.post(PLACE_ORDER_API_URL, {
+        data,
+        signal,
+        timeout: PLACE_ORDER_TIMEOUT,
+        headers: accessToken ? { authorization: accessToken } : undefined,
+      })
+    );
 
     if (!isOrderResponse(response)) {
       throw new Error('Сервер вернул некорректный ответ на запрос ингредиентов');

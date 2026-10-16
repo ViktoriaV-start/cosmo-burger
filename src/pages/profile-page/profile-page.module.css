@@ -1,0 +1,42 @@
+.profile_container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1240px;
+  margin: 120px auto 0;
+  padding: 0 20px;
+}
+
+.profile_menu {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+}
+
+.profile_navigation {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile_link {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  padding: 0;
+  color: var(--text-inactive-color, #8585ad);
+  font-family: inherit;
+  text-align: left;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.profile_link_active {
+  color: var(--text-primary-color, #f2f2f3);
+}
+
+.profile_description {
+  opacity: 0.4;
+}

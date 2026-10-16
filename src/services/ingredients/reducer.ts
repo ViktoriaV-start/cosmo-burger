@@ -44,8 +44,14 @@ export const ingredientsSlice = createSlice({
     getIngredients: (state) => state.items,
     getIngredientsLoading: (state) => state.isLoading,
     getIngredientsError: (state) => state.error,
+    getIngredientById: (state, id: string | undefined) =>
+      state.items.find(({ _id }) => _id === id) ?? null,
   },
 });
 
-export const { getIngredients, getIngredientsLoading, getIngredientsError } =
-  ingredientsSlice.selectors;
+export const {
+  getIngredients,
+  getIngredientsLoading,
+  getIngredientsError,
+  getIngredientById,
+} = ingredientsSlice.selectors;

@@ -20,3 +20,38 @@ export type Order = {
 };
 
 export type IngredientType = 'bun' | 'sauce' | 'main';
+
+export type User = {
+  email: string;
+  password: string;
+  name: string;
+};
+
+export type AuthResponse = {
+  success: boolean;
+  user: {
+    email: string;
+    name: string;
+  };
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type RefreshTokenResponse = {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type AuthRequestResponse = {
+  success: boolean;
+  message: string;
+};
+
+export type UserAuthResponse = {
+  success: boolean;
+  user: {
+    email: string;
+    name: string;
+  };
+};

@@ -1,0 +1,23 @@
+.not_found_container {
+  margin: 10% auto 0;
+}
+
+.not_found_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 480px;
+  text-align: center;
+}
+
+.not_found_code {
+  text-shadow:
+    0 0 16px rgb(51 51 255 / 25%),
+    0 0 8px rgb(51 51 255 / 25%),
+    0 4px 32px rgb(51 51 255 / 50%);
+}
+
+.not_found_link {
+  color: var(--colors-interface-accent, #4c4cff);
+  text-decoration: none;
+}

@@ -28,6 +28,10 @@ export class HttpTransport {
     return this.request(url, { ...options, method: METHODS.PUT });
   };
 
+  patch = (url: string, options: RequestOptions = {}) => {
+    return this.request(url, { ...options, method: METHODS.PATCH });
+  };
+
   delete = (url: string, options: RequestOptions = {}) => {
     return this.request(url, { ...options, method: METHODS.DELETE });
   };
