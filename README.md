@@ -1,5 +1,7 @@
 # Проект Stellar Burger
 
+## React. TypeScript, vite, Redux Toolkit
+
 ## Запуск
 `npm install`
 `npm run dev`
