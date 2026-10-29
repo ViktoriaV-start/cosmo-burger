@@ -15,13 +15,21 @@ body {
 /* Fix for scrollbar */
 
 @supports (scrollbar-color: auto) {
-  .custom-scroll {
-    scrollbar-color: #8585ad #2f2f37;
-    scrollbar-width: thin;
-  }
-
+  .custom-scroll,
   body {
     scrollbar-color: #8585ad #2f2f37;
     scrollbar-width: thin;
+  }
+}
+
+/* Chrome/Edge/Safari: стандартные свойства отключают ::-webkit-scrollbar из UI-кита,
+   а без него на macOS ползунок плавающий и виден только во время прокрутки.
+   :root повышает специфичность: UI-кит вставляет свои стили в <head> из JS — позже index.css */
+
+@supports selector(::-webkit-scrollbar) {
+  :root .custom-scroll,
+  :root body {
+    scrollbar-color: auto;
+    scrollbar-width: auto;
   }
 }

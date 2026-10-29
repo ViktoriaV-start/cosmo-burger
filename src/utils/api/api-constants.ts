@@ -10,7 +10,7 @@ export const METHODS = {
 
 export const RESOURCE_API_URL = '/api/ingredients';
 export const PLACE_ORDER_API_URL = '/api/orders';
-export const REGISTER_API_URL = '/api/auth/register ';
+export const REGISTER_API_URL = '/api/auth/register';
 export const LOGIN_API_URL = '/api/auth/login';
 export const LOGOUT_API_URL = '/api/auth/logout';
 export const TOKEN_API_URL = '/api/auth/token';
