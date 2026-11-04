@@ -24,3 +24,9 @@
   overflow-y: auto;
   list-style: none;
 }
+
+.order_link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}

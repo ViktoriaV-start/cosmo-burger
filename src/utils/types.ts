@@ -56,11 +56,15 @@ export type UserAuthResponse = {
   };
 };
 
-export type FeedOrderIngredient = Pick<Ingredient, 'name' | 'image_mobile'>;
+export type FeedOrderIngredient = Pick<Ingredient, 'name' | 'image_mobile' | 'price'>;
+
+// Статусы заказа, которые присылает сервер
+export type FeedOrderStatus = 'created' | 'pending' | 'done';
 
 export type FeedOrder = {
   number: number;
   name: string;
+  status: FeedOrderStatus;
   createdAt: string;
   ingredients: FeedOrderIngredient[];
   price: number;
