@@ -4,7 +4,10 @@ import {
 } from '@krgaa/react-developer-burger-ui-components';
 import { formatOrderNumber } from '@utils';
 
-import type { FeedOrder } from '@utils';
+import { useAppSelector } from '@hooks/redux.ts';
+import { getIngredients } from '@services/ingredients/reducer.ts';
+
+import type { Order } from '@services/socket/types';
 
 import s from './order-card.module.css';
 
@@ -12,14 +15,21 @@ import s from './order-card.module.css';
 const MAX_VISIBLE_INGREDIENTS = 6;
 
 type OrderCardProps = {
-  order: FeedOrder;
+  order: Order;
 };
 
 export const OrderCard = ({ order }: OrderCardProps) => {
-  const { number, name, createdAt, ingredients, price } = order;
+  const { number, createdAt, ingredients: ingredientIds } = order;
+  const ingredients = useAppSelector(getIngredients);
 
-  const visibleIngredients = ingredients.slice(0, MAX_VISIBLE_INGREDIENTS);
-  const hiddenCount = ingredients.length - MAX_VISIBLE_INGREDIENTS + 1;
+  const orderIngredients = ingredientIds
+    .map((id) => ingredients.find((item) => item._id === id))
+    .filter((item): item is NonNullable<typeof item> => Boolean(item));
+
+  const price = orderIngredients.reduce((sum, ingredient) => sum + ingredient.price, 0);
+
+  const visibleIngredients = orderIngredients.slice(0, MAX_VISIBLE_INGREDIENTS);
+  const hiddenCount = orderIngredients.length - MAX_VISIBLE_INGREDIENTS + 1;
 
   return (
     <article className={`${s.order_card} p-6`}>
@@ -30,7 +40,6 @@ export const OrderCard = ({ order }: OrderCardProps) => {
           className="text text_type_main-default text_color_inactive"
         />
       </div>
-      <h2 className="text text_type_main-medium mt-6">{name}</h2>
       <div className={`${s.order_footer} mt-6`}>
         <ul className={s.ingredients}>
           {visibleIngredients.map((ingredient, index) => {

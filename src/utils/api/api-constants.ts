@@ -17,3 +17,4 @@ export const TOKEN_API_URL = '/api/auth/token';
 export const RECOVERY_PASSWORD_API_URL = '/api/password-reset';
 export const RESET_PASSWORD_API_URL = '/api/password-reset/reset';
 export const AUTH_USER_API_URL = '/api/auth/user';
+export const SOCKET_API_URL = 'wss://new-stellarburgers.education-services.ru';
