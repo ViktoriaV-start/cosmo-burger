@@ -8,7 +8,11 @@ import { useFeedOrderPage } from './use-feed-order-page';
 import s from './feed-order-page.module.css';
 
 export const FeedOrderPage = () => {
-  const { order, isModal, onCloseModal } = useFeedOrderPage();
+  const { order, isModal, onCloseModal, isLoading } = useFeedOrderPage();
+
+  if (isLoading && !order) {
+    return <p className="text text_type_main-default">Загрузка заказа...</p>;
+  }
 
   if (isModal) {
     return order ? (

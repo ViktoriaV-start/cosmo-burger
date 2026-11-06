@@ -6,16 +6,21 @@ import classnames from 'classnames';
 
 import { useOrderInfo } from './use-order-info';
 
-import type { FeedOrder } from '@utils';
+import type { Order } from '@services/socket/types.ts';
 
 import s from './order-info.module.css';
 
 type OrderInfoProps = {
-  order: FeedOrder;
+  order: Order;
 };
 
 export const OrderInfo = ({ order }: OrderInfoProps) => {
   const { statusText, isDone, ingredients } = useOrderInfo(order);
+
+  const totalPrice = ingredients.reduce(
+    (total, ingredient) => total + ingredient.price * ingredient.count,
+    0
+  );
 
   return (
     <div className={s.order_info}>
@@ -50,7 +55,7 @@ export const OrderInfo = ({ order }: OrderInfoProps) => {
           className="text text_type_main-default text_color_inactive"
         />
         <div className={s.price}>
-          <span className="text text_type_digits-default">{order.price}</span>
+          <span className="text text_type_digits-default">{totalPrice}</span>
           <CurrencyIcon type="primary" />
         </div>
       </div>

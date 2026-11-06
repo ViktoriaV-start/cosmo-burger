@@ -1,4 +1,8 @@
-import type { FeedOrder, FeedOrderIngredient, FeedOrderStatus } from '@utils';
+import { useAppSelector } from '@hooks/redux.ts';
+import { getIngredients } from '@services/ingredients/reducer.ts';
+
+import type { Order } from '@services/socket/types.ts';
+import type { FeedOrderStatus, Ingredient } from '@utils';
 
 const STATUS_TEXT: Record<FeedOrderStatus, string> = {
   created: 'Создан',
@@ -6,7 +10,7 @@ const STATUS_TEXT: Record<FeedOrderStatus, string> = {
   done: 'Выполнен',
 };
 
-export type OrderInfoIngredient = FeedOrderIngredient & {
+export type OrderInfoIngredient = Ingredient & {
   count: number;
 };
 
@@ -16,17 +20,25 @@ type UseOrderInfoReturn = {
   ingredients: OrderInfoIngredient[];
 };
 
-export const useOrderInfo = (order: FeedOrder): UseOrderInfoReturn => {
-  // Одинаковые ингредиенты (например, две булки) показываем одной строкой «N x цена»
+export const useOrderInfo = (order: Order): UseOrderInfoReturn => {
+  const allIngredients: Ingredient[] = useAppSelector(getIngredients);
+
   const groups = new Map<string, OrderInfoIngredient>();
 
-  order.ingredients.forEach((ingredient) => {
-    const group = groups.get(ingredient.name);
+  order.ingredients.forEach((ingredientId) => {
+    const ingredient = allIngredients.find((item) => item._id === ingredientId);
+
+    if (!ingredient) return;
+
+    const group = groups.get(ingredient._id);
 
     if (group) {
       group.count += 1;
     } else {
-      groups.set(ingredient.name, { ...ingredient, count: 1 });
+      groups.set(ingredient._id, {
+        ...ingredient,
+        count: 1,
+      });
     }
   });
 

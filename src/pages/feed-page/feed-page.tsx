@@ -1,3 +1,5 @@
+// НЕ РАБОТАЕТ МОДАЛЬНОЕ ОКНО. ПРАВИТЬ ТОЛЬКО ЭТОТ ФАЙЛ
+
 import { Preloader } from '@krgaa/react-developer-burger-ui-components';
 import { DONE_STATUS, IN_PROGRESS_STATUSES, MAX_PER_STATUS } from '@utils';
 import { useEffect } from 'react';
@@ -26,6 +28,7 @@ export const FeedPage = () => {
   const hasOrdersAndIngredients = !!data?.total && !!ingredients.length;
 
   const orders = data?.orders ?? [];
+
   const total = data?.total ?? 0;
   const totalToday = data?.totalToday ?? 0;
 
@@ -52,7 +55,7 @@ export const FeedPage = () => {
   }, [dispatch, ingredients.length]);
 
   if (orderMatch && !isModal) {
-    return <Outlet />;
+    return <Outlet context={{ orders }} />;
   }
 
   return (
@@ -72,9 +75,10 @@ export const FeedPage = () => {
               totalToday={totalToday}
             />
           </div>
-          <Outlet />
         </main>
       )}
+
+      <Outlet context={{ orders }} />
     </>
   );
 };

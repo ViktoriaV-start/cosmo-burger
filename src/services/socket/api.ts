@@ -1,7 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_API_URL, SOCKET_API_URL } from '@utils';
 
-import type { SOCKET_ORDERS_RESPONSE } from '@services/socket/types.ts';
+import type {
+  SOCKET_ORDER_BY_ID_RESPONSE,
+  SOCKET_ORDERS_RESPONSE,
+} from '@services/socket/types.ts';
 
 let ws: WebSocket | null = null;
 
@@ -25,6 +28,10 @@ export const socketApi = createApi({
   reducerPath: 'socketApi',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_API_URL }),
   endpoints: (builder) => ({
+    getOrderById: builder.query<SOCKET_ORDER_BY_ID_RESPONSE, string>({
+      query: (id) => `api/orders/${id}`,
+    }),
+
     getOrders: builder.query<SOCKET_ORDERS_RESPONSE, void>({
       queryFn: () => ({ data: initialOrdersState }),
 
@@ -110,4 +117,5 @@ export const socketApi = createApi({
   }),
 });
 
-export const { useGetOrdersQuery, useGetUserOrdersQuery } = socketApi;
+export const { useLazyGetOrderByIdQuery, useGetOrdersQuery, useGetUserOrdersQuery } =
+  socketApi;
