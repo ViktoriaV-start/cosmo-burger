@@ -62,7 +62,7 @@ export const useFeedOrderPage = (): UseFeedOrderPageReturn => {
   const isModal = Boolean((location.state as IngredientLocationState)?.isModal);
 
   const onCloseModal = (): void => {
-    void navigate('/feed');
+    void navigate(-1);
   };
 
   return {

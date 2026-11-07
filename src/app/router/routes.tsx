@@ -55,6 +55,12 @@ export const routes = [
           {
             path: 'orders',
             element: <ProfileOrderPage />,
+            children: [
+              {
+                path: ':id',
+                element: <FeedOrderPage />,
+              },
+            ],
           },
         ],
       },
