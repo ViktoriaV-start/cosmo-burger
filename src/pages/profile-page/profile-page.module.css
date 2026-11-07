@@ -4,6 +4,8 @@
   align-items: flex-start;
   width: 100%;
   max-width: 1240px;
+  height: calc(100vh - 30vh);
+  min-height: 200px;
   margin: 120px auto 0;
   padding: 0 20px;
 }

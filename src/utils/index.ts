@@ -4,3 +4,4 @@ export * from './api';
 export * from './app-constants';
 export * from './local-storage';
 export * from './tokens';
+export * from './format-order-number';

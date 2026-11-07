@@ -1,3 +1,4 @@
+import { FeedOrderPage } from '@/pages/feed-order-page';
 import { FeedPage } from '@/pages/feed-page';
 import { ForgotPasswordPage } from '@/pages/forgot-password-page';
 import { HomePage } from '@/pages/home-page';
@@ -54,12 +55,24 @@ export const routes = [
           {
             path: 'orders',
             element: <ProfileOrderPage />,
+            children: [
+              {
+                path: ':id',
+                element: <FeedOrderPage />,
+              },
+            ],
           },
         ],
       },
       {
         path: '/feed',
         element: <FeedPage />,
+        children: [
+          {
+            path: ':id',
+            element: <FeedOrderPage />,
+          },
+        ],
       },
       {
         path: '/404',

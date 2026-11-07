@@ -55,3 +55,25 @@ export type UserAuthResponse = {
     name: string;
   };
 };
+
+export type FeedOrderIngredient = Pick<Ingredient, 'name' | 'image_mobile' | 'price'>;
+
+// Статусы заказа, которые присылает сервер
+export type FeedOrderStatus = 'created' | 'pending' | 'done';
+
+export type FeedOrder = {
+  number: number;
+  name: string;
+  status: FeedOrderStatus;
+  createdAt: string;
+  ingredients: FeedOrderIngredient[];
+  price: number;
+};
+
+export type OrdersFeed = {
+  orders: FeedOrder[];
+  ready: number[];
+  inProgress: number[];
+  total: number;
+  totalToday: number;
+};

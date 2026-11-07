@@ -12,11 +12,18 @@ const modalRoot = document.getElementById('cosmo-modals') ?? document.body;
 
 type ModalProps = {
   header?: string;
+  // Например, номер заказа выводится цифровым шрифтом
+  headerClassName?: string;
   onClose: () => void;
   children: ReactNode;
 };
 
-export const Modal = ({ header, onClose, children }: ModalProps) => {
+export const Modal = ({
+  header,
+  headerClassName = 'text text_type_main-large',
+  onClose,
+  children,
+}: ModalProps) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') {
@@ -36,7 +43,7 @@ export const Modal = ({ header, onClose, children }: ModalProps) => {
       <ModalOverlay onClose={onClose} />
       <div className={styles.modal}>
         <div className={styles.modal_header}>
-          {header && <h3 className="text text_type_main-large">{header}</h3>}
+          {header && <h3 className={headerClassName}>{header}</h3>}
           <button
             type="button"
             className={styles.modal_close_button}

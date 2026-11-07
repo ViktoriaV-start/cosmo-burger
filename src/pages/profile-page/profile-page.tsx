@@ -1,6 +1,8 @@
-import { NavLink, Outlet, useMatch } from 'react-router-dom';
+import { NavLink, Outlet, useMatch, useLocation } from 'react-router-dom';
 
 import { useProfilePage } from './use-profile-page';
+
+import type { IngredientLocationState } from '@/pages/ingredient-page/use-ingredient-page'; // <-- добавьте импорт типа
 
 import s from './profile-page.module.css';
 
@@ -10,6 +12,16 @@ const getLinkClassName = ({ isActive }: { isActive: boolean }): string =>
 export const ProfilePage = () => {
   const { onLogout } = useProfilePage();
   const isOrdersPage = useMatch('/profile/orders');
+  const location = useLocation();
+
+  const state = location.state as IngredientLocationState | null;
+
+  const isModal = Boolean(state?.isModal);
+  const isOrderDetailsPage = useMatch('/profile/orders/:id');
+
+  if (isOrderDetailsPage && !isModal) {
+    return <Outlet />;
+  }
 
   return (
     <main className={s.profile_container}>
