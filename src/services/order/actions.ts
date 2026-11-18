@@ -2,9 +2,9 @@ import { getHttpErrorMessage } from '@/api/http-error.ts';
 import { ingredientsApi } from '@/api/ingredients-api.ts';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getSelectedIngredients } from '@services/selected-ingredients/reducer.ts';
+import { getSelectedIngredients } from '@services/selected-ingredients/reducer';
 
-import type { RootState } from '@services/store.ts';
+import type { RootState } from '../store.ts';
 
 type PlaceOrderResult = {
   name: string;

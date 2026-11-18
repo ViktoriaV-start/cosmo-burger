@@ -1,10 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_API_URL, SOCKET_API_URL } from '@utils';
 
-import type {
-  SOCKET_ORDER_BY_ID_RESPONSE,
-  SOCKET_ORDERS_RESPONSE,
-} from '@services/socket/types.ts';
+import type { SOCKET_ORDER_BY_ID_RESPONSE, SOCKET_ORDERS_RESPONSE } from './types';
 
 let ws: WebSocket | null = null;
 

@@ -1,5 +1,5 @@
-import { authApi } from '@/api/auth-api.ts';
-import { getHttpErrorMessage } from '@/api/http-error.ts';
+import { authApi } from '@/api/auth-api';
+import { getHttpErrorMessage } from '@/api/http-error';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { isTokenExists } from '@utils';
 
@@ -58,6 +58,10 @@ export const checkUserAuth = createAsyncThunk<UserAuthResponse['user'] | null, v
 
       return response.user;
     } catch (error) {
+      if (signal.aborted) {
+        throw error;
+      }
+
       console.error(getHttpErrorMessage(error) ?? error);
 
       return null;
