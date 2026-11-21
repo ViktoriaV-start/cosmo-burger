@@ -1,5 +1,5 @@
-import { getHttpErrorMessage } from '@/api/http-error.ts';
-import { ingredientsApi } from '@/api/ingredients-api.ts';
+import { getHttpErrorMessage } from '@/api/http-error';
+import { ingredientsApi } from '@/api/ingredients-api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import type { Ingredient } from '@utils';

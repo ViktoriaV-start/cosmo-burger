@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchIngredients } from './actions.ts';
+import { fetchIngredients } from './actions';
 
 import type { Ingredient } from '@utils';
 
@@ -10,7 +10,7 @@ type IngredientsState = {
   error: string | null;
 };
 
-const initialState: IngredientsState = {
+export const initialState: IngredientsState = {
   items: [],
   isLoading: false,
   error: null,
@@ -18,7 +18,7 @@ const initialState: IngredientsState = {
 
 export const ingredientsSlice = createSlice({
   name: 'ingredients',
-  initialState,
+  initialState: { ...initialState },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -32,11 +32,12 @@ export const ingredientsSlice = createSlice({
         state.items = action.payload;
       })
       .addCase(fetchIngredients.rejected, (state, action) => {
+        state.isLoading = false;
+
         if (action.meta.aborted) {
           return;
         }
 
-        state.isLoading = false;
         state.error = action.payload ?? 'Не удалось загрузить список ингредиентов';
       });
   },

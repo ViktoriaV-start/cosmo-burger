@@ -3,14 +3,14 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { Ingredient, Order } from '@utils';
 
-const initialSelectedIngredientsState: Order = {
+const createInitialSelectedIngredientsState = (): Order => ({
   bun: null,
   ingredients: [],
-};
+});
 
 export const selectedIngredientsSlice = createSlice({
   name: 'selectedIngredients',
-  initialState: initialSelectedIngredientsState,
+  initialState: createInitialSelectedIngredientsState(),
   reducers: {
     addSelectedIngredient: (state, action: PayloadAction<Ingredient>) => {
       const ingredient = { ...action.payload };
@@ -42,7 +42,9 @@ export const selectedIngredientsSlice = createSlice({
 
       return { ...state, ingredients };
     },
-    clearSelectedIngredients: () => initialSelectedIngredientsState,
+    clearSelectedIngredients: () => {
+      return createInitialSelectedIngredientsState();
+    },
   },
   selectors: {
     getSelectedIngredients: (state) => state,

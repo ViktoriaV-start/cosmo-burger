@@ -83,6 +83,7 @@ export const BurgerIngredients = ({ onIngredientClick }: BurgerIngredientsProps)
         ref={containerRef}
         className={classnames(styles.ingredients_scroll, 'custom-scroll')}
         onScroll={handleScroll}
+        data-testid="ingredients-list"
       >
         <div className="mb-10">
           <h2 ref={bunsTitleRef} className="text text_type_main-medium">

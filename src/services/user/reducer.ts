@@ -6,7 +6,7 @@ import {
   fetchLogoutUser,
   fetchRegisterUser,
   fetchUpdateUser,
-} from '@services/user/actions.ts';
+} from './actions';
 
 import type { User } from '@utils';
 
@@ -20,7 +20,7 @@ type UserState = {
   isAuthChecked: boolean;
 };
 
-const initialState: UserState = {
+const createInitialUserState = (): UserState => ({
   email: null,
   name: null,
   accessToken: null,
@@ -28,11 +28,11 @@ const initialState: UserState = {
   isLoading: false,
   error: null,
   isAuthChecked: false,
-};
+});
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState,
+  initialState: createInitialUserState(),
   reducers: {
     setUser: (state, action: PayloadAction<Omit<User, 'password'>>) => {
       state.email = action.payload.email;
@@ -44,16 +44,29 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(checkUserAuth.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
       .addCase(checkUserAuth.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
         state.email = action.payload?.email ?? null;
         state.name = action.payload?.name ?? null;
         state.isAuthChecked = true;
       })
-      .addCase(checkUserAuth.rejected, (state) => {
+      .addCase(checkUserAuth.rejected, (state, action) => {
+        state.isLoading = false;
+
+        if (action.meta.aborted) {
+          return;
+        }
+
         state.isAuthChecked = true;
       })
       .addCase(fetchRegisterUser.pending, (state) => {
         state.isLoading = true;
+        state.isAuthChecked = false;
         state.error = null;
       })
       .addCase(fetchRegisterUser.fulfilled, (state, action) => {
@@ -66,11 +79,12 @@ export const userSlice = createSlice({
         state.isAuthChecked = true;
       })
       .addCase(fetchRegisterUser.rejected, (state, action) => {
+        state.isLoading = false;
+
         if (action.meta.aborted) {
           return;
         }
 
-        state.isLoading = false;
         state.error = action.payload ?? 'Регистрация не произведена';
       })
       .addCase(fetchLoginUser.pending, (state) => {
@@ -87,11 +101,12 @@ export const userSlice = createSlice({
         state.isAuthChecked = true;
       })
       .addCase(fetchLoginUser.rejected, (state, action) => {
+        state.isLoading = false;
+
         if (action.meta.aborted) {
           return;
         }
 
-        state.isLoading = false;
         state.error = action.payload ?? 'Ошибка при входе';
       })
       .addCase(fetchUpdateUser.pending, (state) => {
