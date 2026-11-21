@@ -1,5 +1,7 @@
 # Проект Stellar Burger
 
+## http://89.169.128.229/ - Яндекс облако
+
 ## React. TypeScript, vite, Redux Toolkit
 
 ## Запуск
